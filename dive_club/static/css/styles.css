@@ -12,6 +12,58 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+/* Стили для навигационной панели */
+.navbar {
+  background-color: rgba(0, 0, 0, 0.8);  /* Полупрозрачный черный фон */
+  padding: 15px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  font-size: 2em;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #ffd700; /* Золотой цвет при наведении */
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu li {
+  margin-left: 20px;
+}
+
+.navbar-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1em;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-menu a:hover {
+  background-color: #fff;
+  color: #2a5298;
+}
 
 /* Общие стили для секций */
 section {

@@ -9,20 +9,22 @@
 </head>
 <body>
   <!-- Навигационная панель -->
-  <nav class="navbar">
-    <div class="container">
-      <a href="{% url 'home' %}" class="navbar-brand">Дайверы</a>
-      <ul class="navbar-menu">
-        <li><a href="{% url 'about' %}">О нас</a></li>
-        <li><a href="{% url 'training' %}">Тренировки</a></li>
-        <li><a href="{% url 'equipment' %}">Оборудование</a></li>
-        <li><a href="{% url 'contacts' %}">Контакты</a></li>
-      </ul>
-    </div>
-  </nav>
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <a href="{% url 'home' %}" class="navbar-brand">Дайверы</a>
+        <ul class="navbar-menu">
+          <li><a href="{% url 'about' %}">О нас</a></li>
+          <li><a href="{% url 'training' %}">Тренировки</a></li>
+          <li><a href="{% url 'equipment' %}">Оборудование</a></li>
+          <li><a href="{% url 'contacts' %}">Контакты</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
 
   <!-- Основной контент страницы -->
-  <div class="container">
+  <main class="container">
     {% block content %}
     <!-- Заглушка для контента -->
     <section class="placeholder">
@@ -30,7 +32,7 @@
       <p>Здесь будет основной контент.</p>
     </section>
     {% endblock %}
-  </div>
+  </main>
 
   <!-- Нижний колонтитул -->
   <footer class="footer">
@@ -38,7 +40,7 @@
       <p>&copy; {{ current_year|default:"2025" }} Дайверы. Все права защищены.</p>
       <ul class="footer-links">
         <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
-        <li><a href="{% url 'terms_of_service' %}">Условия обслуживания</a></li>
+        <li><a href="{% url 'terms_of_service' %}">Условия использования</a></li>
       </ul>
     </div>
   </footer>
