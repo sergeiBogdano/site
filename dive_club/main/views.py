@@ -4,13 +4,16 @@ from .models import HomePageContent  # Предполагаем, что вы р�
 
 def home(request):
     homepage_content = HomePageContent.objects.first()  # Предполагаем, что объект один
+    instructor = homepage_content.instructor if homepage_content else None
+
     context = {
         'homepage_content': homepage_content,
         'instructor': homepage_content.instructor if homepage_content else None,
-        'diver_model': homepage_content.diver_model_link if homepage_content else None,
         'discount_title': homepage_content.discount_title if homepage_content else None,
         'discount_description': homepage_content.discount_description if homepage_content else None,
         'discount_percentage': homepage_content.discount_percentage if homepage_content else None,
+        'instructor_room_photo': instructor.room_photo.url if instructor and instructor.room_photo else None,
+        # Добавляем фото помещения
     }
     return render(request, 'main/home.html', context)
 

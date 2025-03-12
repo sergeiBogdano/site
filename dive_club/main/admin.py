@@ -31,7 +31,7 @@ class InstructorAdmin(admin.ModelAdmin):
     list_display = ('name',)
     fieldsets = (
         (None, {
-            'fields': ('name', 'bio', 'avatar')
+            'fields': ('name', 'bio', 'avatar', 'room_photo')
         }),
     )
 
@@ -46,9 +46,6 @@ class HomePageContentAdmin(admin.ModelAdmin):
         }),
         ('Фон и текст', {
             'fields': ('background_photo', 'big_text', 'small_text')
-        }),
-        ('3D модель', {
-            'fields': ('diver_model_link',)
         }),
         ('Инструктор', {
             'fields': ('instructor',)

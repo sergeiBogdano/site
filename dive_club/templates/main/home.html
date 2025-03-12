@@ -43,22 +43,27 @@
     </div>
   </section>
 
-  <!-- Секция инструктора и 3D модели -->
-  <section class="diver-section">
+<section class="diver-section">
     <div class="instructor-info">
-      {% if instructor %}
-        <img src="{{ instructor.avatar.url }}" alt="{{ instructor.name }}" class="avatar">
-        <div class="instructor-text">
-          <h2>{{ instructor.name }}</h2>
-          <p>{{ instructor.bio|default:"Пока нет текста об инструкторе" }}</p>
-        </div>
-      {% else %}
-        <div class="placeholder instructor-info-placeholder">
-          <p>Пока нет информации об инструкторе</p>
-        </div>
-      {% endif %}
+        {% if instructor %}
+            <div class="instructor-images">
+                <img src="{{ instructor.avatar.url }}" alt="{{ instructor.name }}" class="avatar">
+                {% if instructor.room_photo %}
+                    <img src="{{ instructor.room_photo.url }}" alt="Помещение" class="room-photo" style="margin-left: 20px;">
+                {% endif %}
+            </div>
+            <div class="instructor-text">
+                <h2>{{ instructor.name }}</h2>
+                <p>{{ instructor.bio|default:"Пока нет текста об инструкторе" }}</p>
+            </div>
+        {% else %}
+            <div class="placeholder instructor-info-placeholder">
+                <p>Пока нет информации об инструкторе</p>
+            </div>
+        {% endif %}
     </div>
-  </section>
+</section>
+
 
 <!-- Секция со скидками -->
 <section class="discount-section">

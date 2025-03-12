@@ -32,6 +32,7 @@ class Instructor(models.Model):
         null=True,
         verbose_name="Аватар инструктора"
     )
+    room_photo = models.ImageField(upload_to='instructors/', blank=True, null=True, verbose_name="помещение")
 
     def __str__(self):
         return self.name
@@ -85,12 +86,6 @@ class HomePageContent(models.Model):
         null=True,
         blank=True,
         verbose_name="Инструктор"
-    )
-
-    diver_model_link = models.URLField(
-        blank=True,
-        null=True,
-        verbose_name="Ссылка на 3D модель"
     )
 
     # Новые поля для скидок

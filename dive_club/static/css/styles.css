@@ -68,14 +68,26 @@
   margin-bottom: 20px; /* Отступ снизу */
 }
 
-.avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 20px; /* Отступ справа от аватарки */
+.instructor-images {
+  display: flex; /* Используем flex для выравнивания изображений */
+  margin-right: 20px; /* Отступ справа от изображения */
 }
 
+.avatar {
+  width: 150px; /* Ширина аватара */
+  height: 150px; /* Высота аватара */
+  border-radius: 50%; /* Округление аватара */
+  object-fit: cover; /* Обеспечиваем обрезку по размеру */
+}
+
+.room-photo {
+  width: 200px; /* Ширина фотографии помещения */
+  height: auto; /* Высота будет определяться пропорциями */
+  border-radius: 5px; /* Скругление углов */
+  margin-left: 20px; /* Отступ слева для отделения от аватарки */
+}
+
+/* Стили для текста инструктора */
 .instructor-text {
   flex-grow: 1; /* Заставляем текст занимать оставшееся пространство */
 }
@@ -154,7 +166,6 @@ body {
   border-radius: 10px; /* Скругление углов */
   padding: 20px; /* Отступы внутри секций */
 }
-
 
 .discount-section {
     display: flex;
