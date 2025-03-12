@@ -1,223 +1,275 @@
-/* Общие стили для страницы */
+/* Сброс стилей и базовые настройки */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    background: linear-gradient(to bottom, #1e3c72, #2a5298); /* Градиентный фон */
-    color: #fff; /* Цвет текста по умолчанию */
-    font-family: Arial, sans-serif; /* Шрифт по умолчанию */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем отступы по умолчанию */
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #fff;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* Простейшие стили для заглушек */
-.placeholder {
-    border: 2px dashed #ccc;
-    padding: 20px;
-    text-align: center;
-    margin: 10px auto;
+/* Общие стили для секций */
+section {
+  padding: 40px 20px;
+  margin-bottom: 30px;
+  position: relative;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Стили для секций */
-.video-section,
-.photo-section,
-.diver-section,
-.events-section,
-.discount-section,
-.gift-certificates-section {
-    margin-bottom: 30px;
-    border-radius: 10px; /* Скругление углов */
-    padding: 20px; /* Отступы внутри секций */
-    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон для секций */
+/* Плавное появление при прокрутке */
+.before-appear {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
-/* Стили для видео */
-.video-section {
-    position: relative; /* Относительное позиционирование для текста наложения */
+.appear {
+  opacity: 1;
+  transform: translateY(0);
 }
 
+/* Видео секция */
 .video-section video {
-    width: 100%; /* Устанавливаем ширину в 100% */
-    max-width: 1000px; /* Максимальная ширина для более квадратного формата */
-    height: auto; /* Высота будет определяться пропорциями */
-    object-fit: cover; /* Обрезка видео по размеру контейнера */
-    display: block; /* Отображение блока для центрирования */
-    margin: 0 auto; /* Центрируем видео */
+  width: 100%;
+  max-width: 1000px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
 .video-overlay-text {
-    position: absolute;
-    bottom: 10px; /* Позиция снизу */
-    left: 50%; /* Центрируем по горизонтали */
-    transform: translateX(-50%); /* Смещение для центровки */
-    color: #fff; /* Цвет текста */
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Тень для текста */
-    text-align: center; /* Выравнивание текста по центру */
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2em;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
-/* Стили для фото и оверлея */
+/* Фото секция с оверлеем */
 .photo-section {
-    position: relative;
-    text-align: left; /* Выравниваем текст влево */
-    display: flex; /* Используем flex для выравнивания */
-    justify-content: flex-end; /* Перемещаем содержимое вправо */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .photo-section img {
-    width: 50vw; /* Устанавливаем ширину изображения на половину экрана */
-    height: auto; /* Высота будет определяться пропорциями */
-    display: block;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.photo-section img:hover {
+  transform: scale(1.05);
 }
 
 .overlay-text {
-    position: absolute; /* Позиционируем текст относительно родительского элемента */
-    left: 10px; /* Отступ слева для текста */
-    top: 50%; /* Центрируем по вертикали */
-    transform: translateY(-50%); /* Смещение для центровки по вертикали */
-    z-index: 1; /* Повышаем уровень наложения текста */
-    max-width: 40%; /* Максимальная ширина текста */
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 8px;
 }
 
-/* Стили для инструктора */
-.instructor-info {
-    display: flex;
-    align-items: center; /* Вертикальное выравнивание */
-    margin-bottom: 20px; /* Отступ снизу */
+.overlay-text h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.overlay-text p {
+  font-size: 1.2em;
+}
+
+/* Секция инструктора */
+.diver-section .instructor-info {
+  display: flex;
+  align-items: center;
+  padding: 20px;
 }
 
 .instructor-images {
-    display: flex; /* Используем flex для выравнивания изображений */
-    margin-right: 20px; /* Отступ справа от изображения */
+  margin-right: 20px;
+  position: relative;
 }
 
 .avatar {
-    width: 150px; /* Ширина аватара */
-    height: 150px; /* Высота аватара */
-    border-radius: 50%; /* Округление аватара */
-    object-fit: cover; /* Обеспечиваем обрезку по размеру */
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
 }
 
 .room-photo {
-    width: 200px; /* Ширина фотографии помещения */
-    height: auto; /* Высота будет определяться пропорциями */
-    border-radius: 5px; /* Скругление углов */
-    margin-left: 20px; /* Отступ слева для отделения от аватарки */
+  width: 200px;
+  margin-top: 10px;
+  border-radius: 10px;
 }
 
-/* Стили для текста инструктора */
-.instructor-text {
-    flex-grow: 1; /* Заставляем текст занимать оставшееся пространство */
+.instructor-text h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
 }
 
-/* Стили для навигационной панели */
-.navbar {
-    background-color: #2a5298; /* Цвет фона навбара */
-    padding: 10px 0;
+.instructor-text p {
+  font-size: 1.1em;
 }
 
-.navbar-brand {
-    color: #fff;
-    text-decoration: none;
-    font-size: 24px;
-    margin-right: 20px;
-}
-
-.navbar-menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex; /* Располагаем элементы в ряд */
-}
-
-.navbar-menu li {
-    margin-left: 20px; /* Отступ между элементами */
-}
-
-.navbar-menu a {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Стили для нижнего колонтитула */
-.footer {
-    background-color: #1e3c72; /* Цвет фона футера */
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-}
-
-.footer-links {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex; /* Располагаем элементы в ряд */
-    justify-content: center; /* Центрируем элементы */
-}
-
-.footer-links li {
-    margin-left: 20px; /* Отступ между элементами */
-}
-
-.footer-links a {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Стили для секции скидок */
+/* Секция скидок */
 .discount-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
+  text-align: center;
 }
 
-.discount-content {
-    border: 2px solid #ccc; /* рамка прямоугольной формы */
-    padding: 20px;
-    background-color: #122fb5; /* фон для формы */
-    width: 80%; /* ширина формы */
+.discount-content h3 {
+  font-size: 2em;
+  margin-bottom: 10px;
 }
 
 .original-price {
-    font-size: 1.2em;
-    color: red; /* цвет для зачеркнутой цены */
+  font-size: 1.2em;
+  color: #ff4c4c;
 }
 
 .discounted-price {
-    font-size: 1.5em;
-    color: green; /* цвет для цены со скидкой */
+  font-size: 1.8em;
+  color: #4cff4c;
+  margin-bottom: 10px;
 }
 
-/* Стили для секции мероприятий */
+/* Секция подарочных сертификатов */
+.gift-certificates-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.gift-certificates-section img {
+  max-width: 300px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.gift-certificate-form {
+  margin-left: 20px;
+  max-width: 300px;
+}
+
+.gift-certificate-form h3 {
+  margin-bottom: 10px;
+}
+
+.gift-certificate-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.gift-certificate-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #2a5298;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.gift-certificate-form button:hover {
+  background-color: #1e3c72;
+}
+
+/* Секция мероприятий */
 .events-section {
-    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон для секции мероприятий */
-    border-radius: 10px; /* Скругление углов */
-    padding: 20px; /* Отступы внутри секции */
-    text-align: center; /* Выравнивание текста по центру */
+  text-align: center;
 }
 
 .event-images {
-    display: flex; /* Используем flex для расположения мероприятий в ряд */
-    flex-wrap: wrap; /* Позволяем элементам переноситься на новую строку */
-    justify-content: center; /* Центрируем мероприятия */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .event-item {
-    margin: 10px; /* Отступы между мероприятиями */
-    max-width: 250px; /* Максимальная ширина для элемента мероприятия */
-    text-align: left; /* Выравнивание текста влево */
+  background: rgba(0, 0, 0, 0.8);
+  margin: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 300px;
+  text-align: left;
+  transition: transform 0.3s ease;
 }
 
-.event-image {
-    width: 100%; /* Ширина изображения мероприятия */
-    height: auto; /* Высота будет определяться пропорциями */
-    border-radius: 5px; /* Скругление углов изображения */
+.event-item:hover {
+  transform: translateY(-5px);
 }
 
 .event-title {
-    font-size: 1.2em; /* Размер заголовка мероприятия */
-    font-weight: bold; /* Полужирный шрифт */
-    margin-top: 10px; /* Отступ сверху */
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .event-description {
-    font-size: 0.9em; /* Размер описания мероприятия */
-    color: #ccc; /* Цвет текста описания */
+  font-size: 1em;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.event-image {
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: opacity 0.3s ease;
+}
+
+.event-image:hover {
+  opacity: 0.8;
+}
+
+/* Лайтбокс для изображений мероприятий */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+#lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }

@@ -1,42 +1,57 @@
-let scene, camera, renderer;
+document.addEventListener("DOMContentLoaded", function() {
+  // Плавная прокрутка по якорям
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute("href")).scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+  });
 
-function init() {
-    // Создаем сцену
-    scene = new THREE.Scene();
-    
-    // Создаем камеру
-    const container = document.getElementById('three-container');
-    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 5;
-    
-    // Создаем рендерер
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
-    
-    // Пример: добавление вращающегося куба
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    
-    // Функция анимации
-    function animate() {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        renderer.render(scene, camera);
+  // Анимация появления секций при прокрутке
+  const sections = document.querySelectorAll("section");
+  const appearOptions = {
+    threshold: 0.2,
+    rootMargin: "0px 0px -50px 0px"
+  };
+
+  const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("appear");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, appearOptions);
+
+  sections.forEach(section => {
+    section.classList.add("before-appear");
+    appearOnScroll.observe(section);
+  });
+
+  // Лайтбокс для изображений мероприятий
+  const eventImages = document.querySelectorAll(".event-image");
+  const lightbox = document.createElement("div");
+  lightbox.id = "lightbox";
+  document.body.appendChild(lightbox);
+
+  eventImages.forEach(img => {
+    img.addEventListener("click", () => {
+      lightbox.classList.add("active");
+      // Очистка предыдущего содержимого
+      while (lightbox.firstChild) {
+        lightbox.removeChild(lightbox.firstChild);
+      }
+      const lightboxImg = document.createElement("img");
+      lightboxImg.src = img.src;
+      lightbox.appendChild(lightboxImg);
+    });
+  });
+
+  lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) {
+      lightbox.classList.remove("active");
     }
-    animate();
-}
-
-// Обработка изменения размеров окна для корректного отображения сцены
-window.addEventListener('resize', () => {
-    const container = document.getElementById('three-container');
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
 });
-
-// Запускаем инициализацию сцены
-init();
