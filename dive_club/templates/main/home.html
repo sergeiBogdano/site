@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная - Дайверы{% endblock %}
+
+{% block content %}
+  <!-- Видео секция -->
+<section class="video-section">
+    {% if homepage_content and homepage_content.welcome_video %}
+        <video src="{{ homepage_content.welcome_video.url }}" autoplay muted loop></video>
+        {% if homepage_content.overlay_video_text %}
+            <div class="video-overlay-text">
+                <h2>{{ homepage_content.overlay_video_text }}</h2>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="placeholder video-placeholder">
+            <p>Пока нет видео</p>
+        </div>
+    {% endif %}
+</section>
+
+  <!-- Фотография с текстовым оверлеем -->
+  <section class="photo-section">
+    {% if homepage_content and homepage_content.background_photo %}
+      <img src="{{ homepage_content.background_photo.url }}" alt="Фоновое изображение">
+    {% else %}
+      <div class="placeholder photo-placeholder">
+        <p>Пока нет изображения</p>
+      </div>
+    {% endif %}
+    <div class="overlay-text">
+      {% if homepage_content and homepage_content.big_text %}
+        <h1>{{ homepage_content.big_text }}</h1>
+      {% else %}
+        <h1>Пока нет текста</h1>
+      {% endif %}
+      {% if homepage_content and homepage_content.small_text %}
+        <p>{{ homepage_content.small_text }}</p>
+      {% else %}
+        <p>Пока нет текста</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Секция инструктора и 3D модели -->
+  <section class="diver-section">
+    <div class="instructor-info">
+      {% if instructor %}
+        <img src="{{ instructor.avatar.url }}" alt="{{ instructor.name }}" class="avatar">
+        <div class="instructor-text">
+          <h2>{{ instructor.name }}</h2>
+          <p>{{ instructor.bio|default:"Пока нет текста об инструкторе" }}</p>
+        </div>
+      {% else %}
+        <div class="placeholder instructor-info-placeholder">
+          <p>Пока нет информации об инструкторе</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+<!-- Секция со скидками -->
+<section class="discount-section">
+    <h2>Скидки на курсы</h2>
+    <div class="discount-content">
+      {% if homepage_content %}
+        <h3>{{ homepage_content.discount_title }}</h3>
+        <p class="original-price">
+          {% if homepage_content.original_price %}
+            <del>{{ homepage_content.original_price }} ₽</del>
+          {% endif %}
+        </p>
+        {% if homepage_content.discounted_price %}
+          <p class="discounted-price">{{ homepage_content.discounted_price }} ₽</p>
+        {% endif %}
+        <p>{{ homepage_content.discount_description }}</p>
+      {% else %}
+        <p>Пока нет информации о скидках</p>
+      {% endif %}
+    </div>
+  </section>
+<!-- Секция подарочных сертификатов -->
+<section class="gift-certificates-section">
+    <h2>Подарочные сертификаты</h2>
+    {% if homepage_content.certificate_image %}
+        <img src="{{ homepage_content.certificate_image.url }}" alt="Подарочный сертификат">
+    {% else %}
+        <div class="placeholder certificate-placeholder">
+            <p>Пока нет изображения сертификата</p>
+        </div>
+    {% endif %}
+    <div class="gift-certificate-form">
+        <h3>Заказать сертификат</h3>
+        <form method="POST" action="{% url 'gift_certificate_create' %}">
+            {% csrf_token %}
+            <input type="text" name="tg_id" placeholder="Введите ваш Telegram ID" required>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

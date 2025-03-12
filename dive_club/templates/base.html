@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Дайверы{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="navbar-brand">Дайверы</a>
+            <ul class="navbar-menu">
+                <li><a href="{% url 'about' %}">О нас</a></li>
+                <li><a href="{% url 'training' %}">Тренировки</a></li>
+                <li><a href="{% url 'equipment' %}">Оборудование</a></li>
+                <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Контент страницы -->
+    <div class="container">
+        {% block content %}
+        <!-- Заглушка для контента -->
+        <section class="placeholder">
+            <h2>Добро пожаловать на сайт Дайверов!</h2>
+            <p>Здесь будет основной контент.</p>
+        </section>
+        {% endblock %}
+    </div>
+
+    <!-- Нижний колонтитул -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; {{ current_year }} Дайверы. Все права защищены.</p>
+            <ul class="footer-links">
+                <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
+                <li><a href="{% url 'terms_of_service' %}">Условия обслуживания</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
