@@ -4,7 +4,7 @@
 {% block title %}Главная - Дайверы{% endblock %}
 
 {% block content %}
-  <!-- Видео секция -->
+<!-- Видео секция -->
 <section class="video-section">
     {% if homepage_content and homepage_content.welcome_video %}
         <video src="{{ homepage_content.welcome_video.url }}" autoplay muted loop></video>
@@ -20,41 +20,33 @@
     {% endif %}
 </section>
 
-  <!-- Фотография с текстовым оверлеем -->
-  <section class="photo-section">
+<!-- Фотография с текстовым оверлеем -->
+<section class="photo-section">
     {% if homepage_content and homepage_content.background_photo %}
-      <img src="{{ homepage_content.background_photo.url }}" alt="Фоновое изображение">
+        <img src="{{ homepage_content.background_photo.url }}" alt="Фоновое изображение">
     {% else %}
-      <div class="placeholder photo-placeholder">
-        <p>Пока нет изображения</p>
-      </div>
+        <div class="placeholder photo-placeholder">
+            <p>Пока нет изображения</p>
+        </div>
     {% endif %}
     <div class="overlay-text">
-      {% if homepage_content and homepage_content.big_text %}
-        <h1>{{ homepage_content.big_text }}</h1>
-      {% else %}
-        <h1>Пока нет текста</h1>
-      {% endif %}
-      {% if homepage_content and homepage_content.small_text %}
-        <p>{{ homepage_content.small_text }}</p>
-      {% else %}
-        <p>Пока нет текста</p>
-      {% endif %}
+        <h1>{{ homepage_content.big_text|default:"Пока нет текста" }}</h1>
+        <p>{{ homepage_content.small_text|default:"Пока нет текста" }}</p>
     </div>
-  </section>
+</section>
 
 <section class="diver-section">
     <div class="instructor-info">
-        {% if instructor %}
+        {% if homepage_content.instructor %}
             <div class="instructor-images">
-                <img src="{{ instructor.avatar.url }}" alt="{{ instructor.name }}" class="avatar">
-                {% if instructor.room_photo %}
-                    <img src="{{ instructor.room_photo.url }}" alt="Помещение" class="room-photo" style="margin-left: 20px;">
+                <img src="{{ homepage_content.instructor.avatar.url }}" alt="{{ homepage_content.instructor.name }}" class="avatar">
+                {% if homepage_content.instructor.room_photo %}
+                    <img src="{{ homepage_content.instructor.room_photo.url }}" alt="Помещение" class="room-photo" style="margin-left: 20px;">
                 {% endif %}
             </div>
             <div class="instructor-text">
-                <h2>{{ instructor.name }}</h2>
-                <p>{{ instructor.bio|default:"Пока нет текста об инструкторе" }}</p>
+                <h2>{{ homepage_content.instructor.name }}</h2>
+                <p>{{ homepage_content.instructor.bio|default:"Пока нет текста об инструкторе" }}</p>
             </div>
         {% else %}
             <div class="placeholder instructor-info-placeholder">
@@ -64,27 +56,27 @@
     </div>
 </section>
 
-
 <!-- Секция со скидками -->
 <section class="discount-section">
     <h2>Скидки на курсы</h2>
     <div class="discount-content">
-      {% if homepage_content %}
-        <h3>{{ homepage_content.discount_title }}</h3>
-        <p class="original-price">
-          {% if homepage_content.original_price %}
-            <del>{{ homepage_content.original_price }} ₽</del>
-          {% endif %}
-        </p>
-        {% if homepage_content.discounted_price %}
-          <p class="discounted-price">{{ homepage_content.discounted_price }} ₽</p>
+        {% if homepage_content %}
+            <h3>{{ homepage_content.discount_title|default:"Пока нет названия скидки" }}</h3>
+            <p class="original-price">
+                {% if homepage_content.original_price %}
+                    <del>{{ homepage_content.original_price }} ₽</del>
+                {% endif %}
+            </p>
+            {% if homepage_content.discounted_price %}
+                <p class="discounted-price">{{ homepage_content.discounted_price }} ₽</p>
+            {% endif %}
+            <p>{{ homepage_content.discount_description|default:"Пока нет описания скидки" }}</p>
+        {% else %}
+            <p>Пока нет информации о скидках</p>
         {% endif %}
-        <p>{{ homepage_content.discount_description }}</p>
-      {% else %}
-        <p>Пока нет информации о скидках</p>
-      {% endif %}
     </div>
-  </section>
+</section>
+
 <!-- Секция подарочных сертификатов -->
 <section class="gift-certificates-section">
     <h2>Подарочные сертификаты</h2>
@@ -104,4 +96,34 @@
         </form>
     </div>
 </section>
+
+<!-- Секция мероприятий с несколькими изображениями -->
+<section class="events-section">
+    <h2>Мероприятия</h2>
+    <div class="event-images">
+        {% if homepage_content.events.all %}
+            {% for event in homepage_content.events.all %}
+                <div class="event-item">
+                    <p class="event-title">{{ event.title }}</p>
+                    <p class="event-description">{{ event.description|default:"Нет описания мероприятия" }}</p>
+                    <!-- Предполагаем, что у вас есть поле для изображений в модели Event -->
+                    {% if event.images.all %}
+                        {% for image in event.images.all %}
+                            <img src="{{ image.image.url }}" alt="{{ event.title }}" class="event-image">
+                        {% empty %}
+                            <p>Нет изображений для данного мероприятия.</p>
+                        {% endfor %}
+                    {% else %}
+                        <p>Нет изображений для данного мероприятия.</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="placeholder event-placeholder">
+                <p>Пока нет мероприятий</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
 {% endblock %}

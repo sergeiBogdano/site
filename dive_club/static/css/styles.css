@@ -1,172 +1,166 @@
+/* Общие стили для страницы */
+body {
+    background: linear-gradient(to bottom, #1e3c72, #2a5298); /* Градиентный фон */
+    color: #fff; /* Цвет текста по умолчанию */
+    font-family: Arial, sans-serif; /* Шрифт по умолчанию */
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем отступы по умолчанию */
+}
+
 /* Простейшие стили для заглушек */
 .placeholder {
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  margin: 10px auto;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    margin: 10px auto;
 }
 
 /* Стили для секций */
 .video-section,
 .photo-section,
-.diver-section {
-  margin-bottom: 30px;
+.diver-section,
+.events-section,
+.discount-section,
+.gift-certificates-section {
+    margin-bottom: 30px;
+    border-radius: 10px; /* Скругление углов */
+    padding: 20px; /* Отступы внутри секций */
+    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон для секций */
 }
 
 /* Стили для видео */
 .video-section {
-  position: relative; /* Относительное позиционирование для текста наложения */
+    position: relative; /* Относительное позиционирование для текста наложения */
 }
 
 .video-section video {
-  width: 100%; /* Устанавливаем ширину в 100% */
-  max-width: 1000px; /* Максимальная ширина для более квадратного формата */
-  height: auto; /* Высота будет определяться пропорциями */
-  object-fit: cover; /* Обрезка видео по размеру контейнера */
-  display: block; /* Отображение блока для центрирования */
-  margin: 0 auto; /* Центрируем видео */
+    width: 100%; /* Устанавливаем ширину в 100% */
+    max-width: 1000px; /* Максимальная ширина для более квадратного формата */
+    height: auto; /* Высота будет определяться пропорциями */
+    object-fit: cover; /* Обрезка видео по размеру контейнера */
+    display: block; /* Отображение блока для центрирования */
+    margin: 0 auto; /* Центрируем видео */
 }
 
 .video-overlay-text {
-  position: absolute;
-  bottom: 10px; /* Позиция снизу */
-  left: 50%; /* Центрируем по горизонтали */
-  transform: translateX(-50%); /* Смещение для центровки */
-  color: #fff; /* Цвет текста */
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Тень для текста */
-  text-align: center; /* Выравнивание текста по центру */
-  z-index: 2; /* Повышаем уровень наложения текста */
+    position: absolute;
+    bottom: 10px; /* Позиция снизу */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translateX(-50%); /* Смещение для центровки */
+    color: #fff; /* Цвет текста */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Тень для текста */
+    text-align: center; /* Выравнивание текста по центру */
 }
 
 /* Стили для фото и оверлея */
 .photo-section {
-  position: relative;
-  text-align: left; /* Выравниваем текст влево */
-  display: flex; /* Используем flex для выравнивания */
-  justify-content: flex-end; /* Перемещаем содержимое вправо */
+    position: relative;
+    text-align: left; /* Выравниваем текст влево */
+    display: flex; /* Используем flex для выравнивания */
+    justify-content: flex-end; /* Перемещаем содержимое вправо */
 }
 
 .photo-section img {
-  width: 50vw; /* Устанавливаем ширину изображения на половину экрана */
-  height: auto; /* Высота будет определяться пропорциями */
-  display: block;
+    width: 50vw; /* Устанавливаем ширину изображения на половину экрана */
+    height: auto; /* Высота будет определяться пропорциями */
+    display: block;
 }
 
 .overlay-text {
-  position: absolute; /* Позиционируем текст относительно родительского элемента */
-  left: 10px; /* Отступ слева для текста */
-  top: 50%; /* Центрируем по вертикали */
-  transform: translateY(-50%); /* Смещение для центровки по вертикали */
-  z-index: 1; /* Повышаем уровень наложения текста */
-  max-width: 40%; /* Максимальная ширина текста */
+    position: absolute; /* Позиционируем текст относительно родительского элемента */
+    left: 10px; /* Отступ слева для текста */
+    top: 50%; /* Центрируем по вертикали */
+    transform: translateY(-50%); /* Смещение для центровки по вертикали */
+    z-index: 1; /* Повышаем уровень наложения текста */
+    max-width: 40%; /* Максимальная ширина текста */
 }
 
 /* Стили для инструктора */
 .instructor-info {
-  display: flex;
-  align-items: center; /* Вертикальное выравнивание */
-  margin-bottom: 20px; /* Отступ снизу */
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание */
+    margin-bottom: 20px; /* Отступ снизу */
 }
 
 .instructor-images {
-  display: flex; /* Используем flex для выравнивания изображений */
-  margin-right: 20px; /* Отступ справа от изображения */
+    display: flex; /* Используем flex для выравнивания изображений */
+    margin-right: 20px; /* Отступ справа от изображения */
 }
 
 .avatar {
-  width: 150px; /* Ширина аватара */
-  height: 150px; /* Высота аватара */
-  border-radius: 50%; /* Округление аватара */
-  object-fit: cover; /* Обеспечиваем обрезку по размеру */
+    width: 150px; /* Ширина аватара */
+    height: 150px; /* Высота аватара */
+    border-radius: 50%; /* Округление аватара */
+    object-fit: cover; /* Обеспечиваем обрезку по размеру */
 }
 
 .room-photo {
-  width: 200px; /* Ширина фотографии помещения */
-  height: auto; /* Высота будет определяться пропорциями */
-  border-radius: 5px; /* Скругление углов */
-  margin-left: 20px; /* Отступ слева для отделения от аватарки */
+    width: 200px; /* Ширина фотографии помещения */
+    height: auto; /* Высота будет определяться пропорциями */
+    border-radius: 5px; /* Скругление углов */
+    margin-left: 20px; /* Отступ слева для отделения от аватарки */
 }
 
 /* Стили для текста инструктора */
 .instructor-text {
-  flex-grow: 1; /* Заставляем текст занимать оставшееся пространство */
-}
-
-/* Стили для фотографии инструктора */
-.instructor-photo {
-  width: 100px; /* Ширина фотографии инструктора */
-  height: auto; /* Высота будет определяться пропорциями */
-  border-radius: 5px; /* Скругление углов */
+    flex-grow: 1; /* Заставляем текст занимать оставшееся пространство */
 }
 
 /* Стили для навигационной панели */
 .navbar {
-  background-color: #2a5298; /* Цвет фона навбара */
-  padding: 10px 0;
+    background-color: #2a5298; /* Цвет фона навбара */
+    padding: 10px 0;
 }
 
 .navbar-brand {
-  color: #fff;
-  text-decoration: none;
-  font-size: 24px;
-  margin-right: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    margin-right: 20px;
 }
 
 .navbar-menu {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex; /* Располагаем элементы в ряд */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Располагаем элементы в ряд */
 }
 
 .navbar-menu li {
-  margin-left: 20px; /* Отступ между элементами */
+    margin-left: 20px; /* Отступ между элементами */
 }
 
 .navbar-menu a {
-  color: #fff;
-  text-decoration: none;
+    color: #fff;
+    text-decoration: none;
 }
 
 /* Стили для нижнего колонтитула */
 .footer {
-  background-color: #1e3c72; /* Цвет фона футера */
-  color: #fff;
-  text-align: center;
-  padding: 20px 0;
+    background-color: #1e3c72; /* Цвет фона футера */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
 }
 
 .footer-links {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex; /* Располагаем элементы в ряд */
-  justify-content: center; /* Центрируем элементы */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Располагаем элементы в ряд */
+    justify-content: center; /* Центрируем элементы */
 }
 
 .footer-links li {
-  margin-left: 20px; /* Отступ между элементами */
+    margin-left: 20px; /* Отступ между элементами */
 }
 
 .footer-links a {
-  color: #fff;
-  text-decoration: none;
+    color: #fff;
+    text-decoration: none;
 }
 
-/* Стили для затемнения фона */
-body {
-  background: linear-gradient(to bottom, #1e3c72, #2a5298); /* Градиентный фон с преобладанием голубых и синих тонов */
-  color: #fff; /* Цвет текста по умолчанию */
-}
-
-.video-section,
-.photo-section,
-.diver-section {
-  background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон для секций */
-  border-radius: 10px; /* Скругление углов */
-  padding: 20px; /* Отступы внутри секций */
-}
-
+/* Стили для секции скидок */
 .discount-section {
     display: flex;
     flex-direction: column;
@@ -189,4 +183,41 @@ body {
 .discounted-price {
     font-size: 1.5em;
     color: green; /* цвет для цены со скидкой */
+}
+
+/* Стили для секции мероприятий */
+.events-section {
+    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон для секции мероприятий */
+    border-radius: 10px; /* Скругление углов */
+    padding: 20px; /* Отступы внутри секции */
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+.event-images {
+    display: flex; /* Используем flex для расположения мероприятий в ряд */
+    flex-wrap: wrap; /* Позволяем элементам переноситься на новую строку */
+    justify-content: center; /* Центрируем мероприятия */
+}
+
+.event-item {
+    margin: 10px; /* Отступы между мероприятиями */
+    max-width: 250px; /* Максимальная ширина для элемента мероприятия */
+    text-align: left; /* Выравнивание текста влево */
+}
+
+.event-image {
+    width: 100%; /* Ширина изображения мероприятия */
+    height: auto; /* Высота будет определяться пропорциями */
+    border-radius: 5px; /* Скругление углов изображения */
+}
+
+.event-title {
+    font-size: 1.2em; /* Размер заголовка мероприятия */
+    font-weight: bold; /* Полужирный шрифт */
+    margin-top: 10px; /* Отступ сверху */
+}
+
+.event-description {
+    font-size: 0.9em; /* Размер описания мероприятия */
+    color: #ccc; /* Цвет текста описания */
 }

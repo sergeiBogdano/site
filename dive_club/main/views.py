@@ -1,53 +1,64 @@
 from django.shortcuts import render, redirect
-from .models import HomePageContent  # Предполагаем, что вы работаете с этой моделью
-
+from .models import HomePageContent, Event, EventImage
 
 def home(request):
     homepage_content = HomePageContent.objects.first()  # Предполагаем, что объект один
     instructor = homepage_content.instructor if homepage_content else None
+    events = homepage_content.events.all() if homepage_content else []  # Изменяем для получения событий
 
     context = {
         'homepage_content': homepage_content,
-        'instructor': homepage_content.instructor if homepage_content else None,
+        'instructor': instructor,
         'discount_title': homepage_content.discount_title if homepage_content else None,
         'discount_description': homepage_content.discount_description if homepage_content else None,
         'discount_percentage': homepage_content.discount_percentage if homepage_content else None,
         'instructor_room_photo': instructor.room_photo.url if instructor and instructor.room_photo else None,
-        # Добавляем фото помещения
+        'events': events,
     }
     return render(request, 'main/home.html', context)
-
 
 def gift_certificate_create(request):
     if request.method == 'POST':
         tg_id = request.POST.get('tg_id')
-        # Сохранение Telegram ID в модели HomePageContent
-        homepage_content = HomePageContent.objects.first()  # Получаем первый объект (или используйте другой способ)
-        homepage_content.tg_id = tg_id
-        homepage_content.save()
-        return redirect('homepage')  # Перенаправление на главную страницу после успешного сохранения
+        if tg_id:  # Проверяем, что tg_id не пустой
+            homepage_content = HomePageContent.objects.first()
+            if homepage_content:  # Проверяем, что объект существует
+                homepage_content.tg_id = tg_id
+                homepage_content.save()
+                return redirect('homepage')  # Перенаправление на главную страницу после успешного сохранения
     return render(request, 'your_template.html')
 
-
 def about(request):
-    return render(request, 'about.html')  # Шаблон для страницы "О нас"
-
+    return render(request, 'about.html')
 
 def training(request):
-    return render(request, 'training.html')  # Шаблон для страницы "Обучение"
-
+    return render(request, 'training.html')
 
 def equipment(request):
-    return render(request, 'equipment.html')  # Шаблон для страницы "Оборудование"
-
+    return render(request, 'equipment.html')
 
 def contacts(request):
-    return render(request, 'contacts.html')  # Шаблон для страницы "Контакты"
-
+    return render(request, 'contacts.html')
 
 def privacy_policy(request):
-    return render(request, 'privacy_policy.html')  # Шаблон для страницы "Политика конфиденциальности"
-
+    return render(request, 'privacy_policy.html')
 
 def terms_of_service(request):
-    return render(request, 'terms_of_service.html')  # Шаблон для страницы "Условия использования"
+    return render(request, 'terms_of_service.html')
+
+
+def event_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        homepage_content = HomePageContent.objects.first()  # Получение первого объекта HomePageContent
+        event = Event.objects.create(title=title, description=description, homepage_content=homepage_content)
+
+        # Обработка изображений
+        images = request.FILES.getlist('images')
+        for image in images:
+            EventImage.objects.create(event=event, image=image)
+
+        return redirect('some_view')  # перенаправление после создания
+
+    return render(request, 'event_create.html')  # шаблон для создания мероприятия

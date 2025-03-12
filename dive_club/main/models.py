@@ -2,7 +2,6 @@ import os
 from django.db import models
 from django.core.exceptions import ValidationError
 
-
 # Валидация для изображений
 def validate_image_file_size(value):
     limit = 5 * 1024 * 1024  # 5 MB
@@ -32,7 +31,7 @@ class Instructor(models.Model):
         null=True,
         verbose_name="Аватар инструктора"
     )
-    room_photo = models.ImageField(upload_to='instructors/', blank=True, null=True, verbose_name="помещение")
+    room_photo = models.ImageField(upload_to='instructors/', blank=True, null=True, verbose_name="Помещение")
 
     def __str__(self):
         return self.name
@@ -48,7 +47,7 @@ class HomePageContent(models.Model):
         blank=True,
         null=True,
         verbose_name="Видео приветствия",
-        validators=[validate_video_file_size, validate_file_extension]  # Добавляем валидацию
+        validators=[validate_video_file_size, validate_file_extension]
     )
 
     background_photo = models.ImageField(
@@ -56,7 +55,7 @@ class HomePageContent(models.Model):
         blank=True,
         null=True,
         verbose_name="Фоновое изображение",
-        validators=[validate_image_file_size, validate_file_extension]  # Добавляем валидацию
+        validators=[validate_image_file_size, validate_file_extension]
     )
 
     big_text = models.CharField(
@@ -142,6 +141,13 @@ class HomePageContent(models.Model):
         null=True
     )
 
+    event_text = models.CharField(
+        max_length=100,
+        verbose_name="Описание мероприятий",
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return "Контент главной страницы"
 
@@ -149,3 +155,31 @@ class HomePageContent(models.Model):
         verbose_name = "Контент главной страницы"
         verbose_name_plural = "Контент главной страницы"
 
+
+class Event(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название мероприятия")
+    description = models.TextField(verbose_name="Описание мероприятия", blank=True, null=True)
+
+    # Сделаем внешний ключ nullable
+    homepage_content = models.ForeignKey(
+        HomePageContent,
+        on_delete=models.CASCADE,
+        related_name='events',
+        verbose_name="Контент главной страницы",
+        null=True  # Разрешаем null для существующих записей
+    )
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Мероприятие"
+        verbose_name_plural = "Мероприятия"
+
+
+class EventImage(models.Model):
+    event = models.ForeignKey(Event, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='events/', validators=[validate_image_file_size, validate_file_extension])
+
+    def __str__(self):
+        return f"{self.event.title} - Image"
