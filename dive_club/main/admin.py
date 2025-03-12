@@ -42,7 +42,7 @@ class HomePageContentAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Видео', {
-            'fields': ('welcome_video',)
+            'fields': ('welcome_video', 'overlay_video_text')
         }),
         ('Фон и текст', {
             'fields': ('background_photo', 'big_text', 'small_text')
