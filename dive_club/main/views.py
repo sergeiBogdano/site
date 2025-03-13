@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import HomePageContent, Event, EventImage
+from .models import HomePageContent, Event, EventImage, EquipmentPageContent, GalleryImage
+
 
 def home(request):
     homepage_content = HomePageContent.objects.first()  # Предполагаем, что объект один
@@ -34,8 +35,18 @@ def about(request):
 def training(request):
     return render(request, 'training.html')
 
+
 def equipment(request):
-    return render(request, 'equipment.html')
+    # Предполагается, что EquipmentPageContent существует в единственном экземпляре
+    equipment_page_content = EquipmentPageContent.objects.first()
+    # Получаем список оборудования, связанного с этой страницей
+    equipment_list = equipment_page_content.equipment.all() if equipment_page_content else []
+
+    context = {
+        'equipment_page_content': equipment_page_content,
+        'equipment_list': equipment_list,
+    }
+    return render(request, 'main/equipment.html', context)
 
 def contacts(request):
     return render(request, 'contacts.html')
@@ -62,3 +73,9 @@ def event_create(request):
         return redirect('some_view')  # перенаправление после создания
 
     return render(request, 'event_create.html')  # шаблон для создания мероприятия
+
+
+
+def gallery(request):
+    images = GalleryImage.objects.all().order_by('-uploaded_at')  # Сортировка от новых к старым
+    return render(request, 'main/gallery.html', {'images': images})

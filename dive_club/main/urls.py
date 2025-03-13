@@ -16,4 +16,5 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),  # Заглушка для страницы "Политика конфиденциальности"
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),  # Заглушка для страницы "Условия использования"
     path('gift-certificate/create/', views.gift_certificate_create, name='gift_certificate_create'), # для страницы "подарочные сертификаты"
+    path('gallery/', views.gallery, name='gallery'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

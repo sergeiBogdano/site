@@ -1,34 +1,8 @@
 from django.contrib import admin
-from .models import Instructor, HomePageContent, Event, EventImage
-from django import forms
+from .models import Instructor, HomePageContent, Event, EventImage, EquipmentPageContent, Equipment, GalleryImage
+from .forms import HomePageContentForm, EquipmentPageContentForm, EquipmentForm, GalleryImageForm
+from django.utils.html import format_html
 
-
-class HomePageContentForm(forms.ModelForm):
-    class Meta:
-        model = HomePageContent
-        fields = '__all__'
-        widgets = {
-            'big_text': forms.Textarea(attrs={
-                'rows': 10,
-                'cols': 80,
-                'style': 'width: 100%;'
-            }),
-            'small_text': forms.Textarea(attrs={
-                'rows': 5,
-                'cols': 80,
-                'style': 'width: 100%;'
-            }),
-            'discount_description': forms.Textarea(attrs={
-                'rows': 5,
-                'cols': 80,
-                'style': 'width: 100%;'
-            }),
-            'event_text': forms.Textarea(attrs={
-                'rows': 5,
-                'cols': 80,
-                'style': 'width: 100%;'
-            }),
-        }
 
 class EventImageInline(admin.TabularInline):
     model = EventImage
@@ -75,6 +49,41 @@ class HomePageContentAdmin(admin.ModelAdmin):
             'fields': ('certificate_image', 'tg_id')
         }),
     )
+
+    @admin.register(EquipmentPageContent)
+    class EquipmentPageContentAdmin(admin.ModelAdmin):
+        form = EquipmentPageContentForm
+        filter_horizontal = ('equipment',)  # для удобства выбора оборудования
+        fieldsets = (
+            ('Основной контент', {
+                'fields': ('title', 'description', 'background_photo')
+            }),
+            ('Оборудование', {
+                'fields': ('equipment',)
+            }),
+        )
+
+    @admin.register(Equipment)
+    class EquipmentAdmin(admin.ModelAdmin):
+        form = EquipmentForm
+        list_display = ('name',)
+        search_fields = ('name',)
+        fieldsets = (
+            (None, {
+                'fields': ('name', 'description', 'image')
+            }),
+        )
+
+    @admin.register(GalleryImage)
+    class GalleryImageAdmin(admin.ModelAdmin):
+        form = GalleryImageForm
+        list_display = ('id', 'uploaded_at')
+        ordering = ('-uploaded_at',)
+
+
+
+
+
 
     def has_add_permission(self, request):
         if self.model.objects.exists():

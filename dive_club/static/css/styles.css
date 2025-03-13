@@ -1,4 +1,15 @@
-/* Сброс стилей и базовые настройки */
+/* --- Основные переменные --- */
+:root {
+  --primary-color: #2a5298;       /* темно-синий */
+  --secondary-color: #1e3c72;     /* еще более темный синий */
+  --accent-color: #ffd700;
+  --text-color: #ffffff;
+  /* Градиент от светло-голубого сверху до глубокого фиолетово-синего снизу */
+  --bg-gradient: linear-gradient(to bottom, #a1c4fd, #c2e9fb, #2a5298, #1e3c72, #000000);
+  --transition-speed: 0.4s;
+}
+
+/* --- Сброс стилей и базовые настройки --- */
 * {
   margin: 0;
   padding: 0;
@@ -6,322 +17,473 @@
 }
 
 body {
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-color);
   line-height: 1.6;
   overflow-x: hidden;
 }
-/* Стили для навигационной панели */
-.navbar {
-  background-color: rgba(0, 0, 0, 0.8);  /* Полупрозрачный черный фон */
-  padding: 15px 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
+/* --- Анимация появления --- */
+.before-appear {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Навигационная панель --- */
+.navbar {
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
 .navbar .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-
 .navbar-brand {
   font-size: 2em;
-  font-weight: bold;
-  color: #fff;
+  font-weight: 700;
+  color: var(--text-color);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color var(--transition-speed) ease;
 }
-
 .navbar-brand:hover {
-  color: #ffd700; /* Золотой цвет при наведении */
+  color: var(--accent-color);
 }
-
 .navbar-menu {
   list-style: none;
   display: flex;
   margin: 0;
   padding: 0;
 }
-
 .navbar-menu li {
   margin-left: 20px;
 }
-
 .navbar-menu a {
-  color: #fff;
+  color: var(--text-color);
   text-decoration: none;
   font-size: 1.1em;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
-
 .navbar-menu a:hover {
-  background-color: #fff;
-  color: #2a5298;
+  background-color: var(--text-color);
+  color: var(--primary-color);
 }
 
-/* Общие стили для секций */
-section {
-  padding: 40px 20px;
-  margin-bottom: 30px;
+/* --- Видео секция --- */
+.video-section {
   position: relative;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
 }
-
-/* Плавное появление при прокрутке */
-.before-appear {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s ease-out, transform 1s ease-out;
-}
-
-.appear {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Видео секция */
 .video-section video {
   width: 100%;
   max-width: 1000px;
   display: block;
   margin: 0 auto;
-  border-radius: 10px;
+  border-radius: 12px;
   object-fit: cover;
 }
-
 .video-overlay-text {
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2em;
+  font-size: 2.5em;
   font-weight: bold;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-}
-
-/* Фото секция с оверлеем */
-.photo-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.photo-section img {
-  width: 100%;
-  max-width: 800px;
-  border-radius: 10px;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.photo-section img:hover {
-  transform: scale(1.05);
-}
-
-.overlay-text {
-  position: absolute;
-  left: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.6);
-  padding: 20px;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
+  padding: 15px 25px;
   border-radius: 8px;
 }
 
+/* --- Фото секция с текстовым оверлеем (текст слева) --- */
+.photo-section {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+.photo-section img {
+  width: 60%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.overlay-text {
+  position: absolute;
+  left: 0;             /* смещаем текстовый блок влево */
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 50%;       /* текст не займет более 50% ширины */
+  background: rgba(0, 0, 0, 0.65);
+  padding: 20px;
+  border-radius: 8px;
+  color: #fff;
+  overflow: hidden;
+}
 .overlay-text h1 {
-  font-size: 2.5em;
+  font-size: 2.8em;
   margin-bottom: 10px;
 }
-
 .overlay-text p {
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
-/* Секция инструктора */
-.diver-section .instructor-info {
+/* --- Секция инструктора --- */
+.diver-section {
+  margin-bottom: 40px;
+}
+.instructor-info {
   display: flex;
   align-items: center;
   padding: 20px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
-
 .instructor-images {
   margin-right: 20px;
-  position: relative;
 }
-
 .avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #fff;
+  border: 4px solid var(--text-color);
 }
-
 .room-photo {
   width: 200px;
   margin-top: 10px;
   border-radius: 10px;
 }
-
 .instructor-text h2 {
-  font-size: 2em;
+  font-size: 2.2em;
   margin-bottom: 10px;
 }
-
 .instructor-text p {
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
-/* Секция скидок */
+/* --- Секция скидок --- */
 .discount-section {
   text-align: center;
+  margin-bottom: 40px;
 }
-
+.discount-content {
+  background: rgba(18, 47, 181, 0.9);
+  padding: 25px 30px;
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
 .discount-content h3 {
-  font-size: 2em;
+  font-size: 2.2em;
   margin-bottom: 10px;
 }
-
 .original-price {
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: #ff4c4c;
 }
-
 .discounted-price {
   font-size: 1.8em;
   color: #4cff4c;
   margin-bottom: 10px;
 }
 
-/* Секция подарочных сертификатов */
+/* --- Секция подарочных сертификатов --- */
 .gift-certificates-section {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
 }
-
 .gift-certificates-section img {
   max-width: 300px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 20px;
+  transition: transform 0.5s ease;
 }
-
+.gift-certificates-section img:hover {
+  transform: scale(1.05);
+}
 .gift-certificate-form {
   margin-left: 20px;
   max-width: 300px;
 }
-
 .gift-certificate-form h3 {
   margin-bottom: 10px;
+  font-size: 1.8em;
 }
-
 .gift-certificate-form input[type="text"] {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 5px;
   margin-bottom: 10px;
 }
-
 .gift-certificate-form button {
   width: 100%;
-  padding: 10px;
-  background-color: #2a5298;
-  color: #fff;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-speed) ease;
 }
-
 .gift-certificate-form button:hover {
-  background-color: #1e3c72;
+  background-color: var(--secondary-color);
 }
 
-/* Секция мероприятий */
+/* --- Секция мероприятий --- */
 .events-section {
   text-align: center;
+  margin-bottom: 40px;
 }
-
 .event-images {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  gap: 0;  /* Без промежутков, для наложения */
 }
-
 .event-item {
-  background: rgba(0, 0, 0, 0.8);
-  margin: 10px;
-  padding: 15px;
-  border-radius: 10px;
-  max-width: 300px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  width: 280px;
   text-align: left;
-  transition: transform 0.3s ease;
+  position: relative;
+  /* Каждый последующий элемент смещается на половину ширины элемента */
+  margin-left: -140px;
+  transition: transform 0.3s ease, margin 0.3s ease, z-index 0.3s ease;
 }
-
+.event-item:first-child {
+  margin-left: 0;
+}
 .event-item:hover {
-  transform: translateY(-5px);
+  transform: scale(1.05);
+  z-index: 10;
+  margin-left: 0; /* при наведении элемент показывается полностью */
 }
-
 .event-title {
-  font-size: 1.5em;
+  font-size: 1.6em;
   font-weight: bold;
   margin-bottom: 10px;
 }
-
 .event-description {
   font-size: 1em;
   margin-bottom: 10px;
   color: #ccc;
 }
-
-.event-image {
+.event-item .event-image {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-bottom: 10px;
+  cursor: pointer;
   transition: opacity 0.3s ease;
 }
-
-.event-image:hover {
-  opacity: 0.8;
+.event-item .event-image:hover {
+  opacity: 0.85;
 }
 
-/* Лайтбокс для изображений мероприятий */
+/* --- Лайтбокс для изображений мероприятий --- */
 #lightbox {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 1000;
+  transition: opacity 0.4s ease;
+  z-index: 1100;
 }
-
 #lightbox.active {
   opacity: 1;
   pointer-events: auto;
 }
-
 #lightbox img {
   max-width: 90%;
   max-height: 90%;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+}
+/* Секция hero для страницы оборудования */
+.equipment-hero {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.equipment-hero .overlay {
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.equipment-hero h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.equipment-hero p {
+  font-size: 1.3em;
+}
+
+/* Секция списка оборудования */
+.equipment-list {
+  padding: 20px;
+  text-align: center;
+}
+
+.equipment-list h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.equipment-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Секция снаряжение */
+
+.equipment-item {
+  background: rgba(0, 0, 0, 0.85);
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.equipment-item:hover {
+  transform: scale(1.03);
+}
+
+.equipment-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.equipment-item h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.equipment-item p {
+  font-size: 1em;
+  color: #ccc;
+}
+/* --- Стили для галереи --- */
+.gallery-container {
+  padding: 20px;
+}
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+.gallery-item {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+}
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+/* --- Лайтбокс --- */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 1100;
+}
+.lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+}
+
+/* --- Стрелки в лайтбоксе --- */
+.lightbox a.prev, .lightbox a.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3em;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+.lightbox a.prev:hover, .lightbox a.next:hover {
+  color: var(--accent-color);
+}
+.lightbox a.prev {
+  left: 20px;
+}
+.lightbox a.next {
+  right: 20px;
 }

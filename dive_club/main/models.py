@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 # Валидация для изображений
 def validate_image_file_size(value):
@@ -183,3 +184,57 @@ class EventImage(models.Model):
 
     def __str__(self):
         return f"{self.event.title} - Image"
+
+
+# Модель для оборудования (все в одной записи)
+class Equipment(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Название оборудования")
+    description = models.TextField(verbose_name="Описание", blank=True, null=True)
+    image = models.ImageField(
+        upload_to='equipment/',
+        validators=[validate_image_file_size, validate_file_extension],
+        verbose_name="Изображение"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Оборудование"
+        verbose_name_plural = "Оборудование"
+
+
+# Контент страницы оборудования
+class EquipmentPageContent(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Заголовок страницы", default="Снаряжение для дайвинга")
+    description = models.TextField(verbose_name="Описание страницы", blank=True, null=True)
+    background_photo = models.ImageField(
+        upload_to='equipment_page/',
+        blank=True,
+        null=True,
+        verbose_name="Фоновое изображение",
+        validators=[validate_image_file_size, validate_file_extension]
+    )
+    equipment = models.ManyToManyField(Equipment, related_name="equipment_page", blank=True, verbose_name="Список оборудования")
+
+    def __str__(self):
+        return "Контент страницы оборудования"
+
+    class Meta:
+        verbose_name = "Контент страницы оборудования"
+        verbose_name_plural = "Контент страницы оборудования"
+
+
+class GalleryImage(models.Model):
+    image = models.ImageField(upload_to="gallery/")
+    uploaded_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-uploaded_at"]
+
+    def __str__(self):
+        return f"Фото {self.id} ({self.uploaded_at.strftime('%Y-%m-%d %H:%M')})"
+
+    class Meta:
+        verbose_name = "Галерея"
+        verbose_name_plural = "Галерея"
