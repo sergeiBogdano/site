@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Галерея - Дайверы{% endblock %}
+
+{% block content %}
+<div class="gallery-container">
+  <div class="gallery-grid">
+    {% for image in images %}
+      {% if image.image %}
+        <img src="{{ image.image.url }}" class="gallery-item" data-full="{{ image.image.url }}" alt="Фото">
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Лайтбокс создается динамически через script.js, поэтому здесь его удаляем -->
+
+<!-- Подключаем общий JS-файл -->
+<script src="{% static 'js/script.js' %}"></script>
+
+{% endblock %}
