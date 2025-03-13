@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-container">
+    <h1>{{ about_page.title }}</h1>
+    <p>{{ about_page.introduction }}</p>
+
+    <h2>Наша команда</h2>
+    <p>{{ about_page.team_description }}</p>
+    <div class="team-section">
+        {% for instructor in instructors %}
+            <div class="instructor">
+                <h3>{{ instructor.name }}</h3>
+                <img src="{{ instructor.avatar.url }}" alt="{{ instructor.name }}">
+                <p>{{ instructor.bio }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Наши услуги</h2>
+    <p>{{ about_page.services }}</p>
+
+    <h2>Связь с нами</h2>
+    <p>{{ about_page.contact_info }}</p>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import HomePageContent, Equipment, EquipmentPageContent, GalleryImage
+from .models import HomePageContent, Equipment, EquipmentPageContent, GalleryImage, ContactPage
 
 
 class HomePageContentForm(forms.ModelForm):
@@ -70,3 +70,8 @@ class GalleryImageForm(forms.ModelForm):
         for image in images:
             GalleryImage.objects.create(image=image)
         return super().save(commit=False)
+
+class ContactPageForm(forms.ModelForm):
+    class Meta:
+        model = ContactPage
+        fields = ['address', 'phone_numbers', 'email', 'social_links']

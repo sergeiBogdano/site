@@ -238,3 +238,139 @@ class GalleryImage(models.Model):
     class Meta:
         verbose_name = "Галерея"
         verbose_name_plural = "Галерея"
+
+
+class TrainingPage(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Заголовок")
+    description = models.TextField(verbose_name="Описание страницы")
+
+    # Уровни курсов
+    beginner_courses = models.TextField(verbose_name="Курсы для новичков")
+    advanced_courses = models.TextField(verbose_name="Продвинутые курсы")
+    professional_courses = models.TextField(verbose_name="Профессиональные курсы")
+    tech_courses = models.TextField(verbose_name="Технический дайвинг")
+
+    advantages = models.TextField(verbose_name="Преимущества обучения")
+
+    # Стоимость
+    course_prices = models.TextField(verbose_name="Цены на курсы")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Страница обучения"
+        verbose_name_plural = "Страница обучения"
+
+
+class TrainingImage(models.Model):
+    training_page = models.ForeignKey(
+        TrainingPage, on_delete=models.CASCADE, related_name="images", verbose_name="Страница обучения"
+    )
+    image = models.ImageField(
+        upload_to="training_images/",
+        validators=[validate_image_file_size, validate_file_extension],
+        verbose_name="Изображение"
+    )
+
+    def __str__(self):
+        return f"Изображение для {self.training_page.title}"
+
+    class Meta:
+        verbose_name = "Изображение обучения"
+        verbose_name_plural = "Изображения обучения"
+
+
+class TrainingVideo(models.Model):
+    training_page = models.ForeignKey(
+        TrainingPage, on_delete=models.CASCADE, related_name="videos", verbose_name="Страница обучения"
+    )
+    video = models.FileField(
+        upload_to="training_videos/",
+        validators=[validate_video_file_size, validate_file_extension],
+        verbose_name="Видео"
+    )
+
+    def __str__(self):
+        return f"Видео для {self.training_page.title}"
+
+    class Meta:
+        verbose_name = "Видео обучения"
+        verbose_name_plural = "Видео обучения"
+
+
+class AboutPage(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Заголовок")
+    introduction = models.TextField(verbose_name="Введение")
+
+    # Поля для команды
+    team_description = models.TextField(verbose_name="Описание команды", blank=True, null=True)
+    team_image = models.ImageField(upload_to='about/team/', verbose_name="Изображение команды", blank=True, null=True)
+    instructors = models.ManyToManyField(Instructor, blank=True, verbose_name="Инструкторы")
+    # Поля для услуг
+    services = models.TextField(verbose_name="Наши услуги", blank=True, null=True)
+    services_image = models.ImageField(upload_to='about/services/', verbose_name="Изображение услуг", blank=True,
+                                       null=True)
+
+    contact_info = models.TextField(verbose_name="Связь с нами", blank=True, null=True)
+    facebook_link = models.URLField(verbose_name="Ссылка на Facebook", blank=True, null=True)
+    instagram_link = models.URLField(verbose_name="Ссылка на Instagram", blank=True, null=True)
+
+    team_photo = models.ImageField(
+        upload_to='about/team/',
+        blank=True,
+        null=True,
+        verbose_name="Фото команды",
+        validators=[validate_image_file_size, validate_file_extension]
+    )
+
+    mission_photo = models.ImageField(
+        upload_to='about/mission/',
+        blank=True,
+        null=True,
+        verbose_name="Фото миссии",
+        validators=[validate_image_file_size, validate_file_extension]
+    )
+
+    mission_statement = models.TextField(verbose_name="Наша миссия")
+    mission_image = models.ImageField(
+        upload_to='about/mission_image/',
+        blank=True,
+        null=True,
+        verbose_name="Изображение миссии",
+        validators=[validate_image_file_size, validate_file_extension]
+    )
+
+    services = models.TextField(verbose_name="Наши услуги")
+    services_image = models.ImageField(
+        upload_to='about/services_image/',
+        blank=True,
+        null=True,
+        verbose_name="Изображение услуг",
+        validators=[validate_image_file_size, validate_file_extension]
+    )
+
+    contact_info = models.TextField(verbose_name="Связь с нами")
+    social_links = models.JSONField(verbose_name="Ссылки на соцсети", blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "О нас"
+        verbose_name_plural = "О нас"
+
+
+class ContactPage(models.Model):
+    address = models.CharField("Адрес", max_length=255)
+    phone_numbers = models.JSONField("Телефонные номера", default=list)  # Список номеров
+    email = models.EmailField("Электронная почта")
+    map_link = models.URLField("Ссылка на карту")  # Ссылка на карту
+    social_links = models.JSONField("Социальные сети", default=dict)  # Ссылки на соцсети
+
+    class Meta:
+        verbose_name = "Контактная страница"
+        verbose_name_plural = "Контактные страницы"
+
+    def __str__(self):
+        return "Контактная информация"

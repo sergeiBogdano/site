@@ -1,8 +1,30 @@
 from django.contrib import admin
-from .models import Instructor, HomePageContent, Event, EventImage, EquipmentPageContent, Equipment, GalleryImage
-from .forms import HomePageContentForm, EquipmentPageContentForm, EquipmentForm, GalleryImageForm
-from django.utils.html import format_html
+from .models import (
+    Instructor, HomePageContent,
+    Event, EventImage,
+    EquipmentPageContent,
+    Equipment, GalleryImage,
+    TrainingPage, TrainingImage,
+    TrainingVideo, AboutPage,
+    ContactPage
+)
+from .forms import (
+    HomePageContentForm,
+    EquipmentPageContentForm,
+    EquipmentForm,
+    GalleryImageForm,
+    ContactPageForm
+)
 
+
+def has_add_permission(self, request):
+    if self.model.objects.exists():
+        return False
+    return True
+
+
+def has_change_permission(self, request, obj=None):
+    return True
 
 class EventImageInline(admin.TabularInline):
     model = EventImage
@@ -50,45 +72,92 @@ class HomePageContentAdmin(admin.ModelAdmin):
         }),
     )
 
-    @admin.register(EquipmentPageContent)
-    class EquipmentPageContentAdmin(admin.ModelAdmin):
-        form = EquipmentPageContentForm
-        filter_horizontal = ('equipment',)  # для удобства выбора оборудования
-        fieldsets = (
-            ('Основной контент', {
-                'fields': ('title', 'description', 'background_photo')
-            }),
-            ('Оборудование', {
-                'fields': ('equipment',)
-            }),
-        )
+@admin.register(EquipmentPageContent)
+class EquipmentPageContentAdmin(admin.ModelAdmin):
+    form = EquipmentPageContentForm
+    filter_horizontal = ('equipment',)  # для удобства выбора оборудования
+    fieldsets = (
+        ('Основной контент', {
+            'fields': ('title', 'description', 'background_photo')
+        }),
+        ('Оборудование', {
+            'fields': ('equipment',)
+        }),
+    )
 
-    @admin.register(Equipment)
-    class EquipmentAdmin(admin.ModelAdmin):
-        form = EquipmentForm
-        list_display = ('name',)
-        search_fields = ('name',)
-        fieldsets = (
-            (None, {
-                'fields': ('name', 'description', 'image')
-            }),
-        )
+@admin.register(Equipment)
+class EquipmentAdmin(admin.ModelAdmin):
+    form = EquipmentForm
+    list_display = ('name',)
+    search_fields = ('name',)
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description', 'image')
+        }),
+    )
 
-    @admin.register(GalleryImage)
-    class GalleryImageAdmin(admin.ModelAdmin):
-        form = GalleryImageForm
-        list_display = ('id', 'uploaded_at')
-        ordering = ('-uploaded_at',)
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+    form = GalleryImageForm
+    list_display = ('id', 'uploaded_at')
+    ordering = ('-uploaded_at',)
+
+class TrainingImageInline(admin.TabularInline):
+    model = TrainingImage
+    extra = 1  # Позволяет загружать несколько изображений
+
+class TrainingVideoInline(admin.TabularInline):
+    model = TrainingVideo
+    extra = 1  # Позволяет загружать несколько видео
 
 
+@admin.register(TrainingPage)
+class TrainingPageAdmin(admin.ModelAdmin):
+    list_display = ("title",)
+    inlines = [TrainingImageInline, TrainingVideoInline]  # Добавляем изображения и видео
+
+    fieldsets = (
+        ("Основное", {"fields": ("title", "description")}),
+        ("Курсы", {"fields": ("beginner_courses", "advanced_courses", "professional_courses", "tech_courses")}),
+        ("Преимущества", {"fields": ("advantages",)}),
+        ("Стоимость", {"fields": ("course_prices",)}),
+    )
 
 
+@admin.register(AboutPage)
+class AboutPageAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+                'introduction',
+                'team_description',
+                'team_image',
+                'instructors', # Поле для изображения команды
+                'services',
+                'services_image',  # Поле для изображения услуг
+                'contact_info',
+                'facebook_link',
+                'instagram_link',
+            )
+        }),
+    )
+
+    list_display = ('title',)
 
 
-    def has_add_permission(self, request):
-        if self.model.objects.exists():
-            return False
-        return True
+@admin.register(ContactPage)
+class ContactPageAdmin(admin.ModelAdmin):
+    list_display = ('address', 'email',)
+    fieldsets = (
+        ("Основная информация", {
+            "fields": ("address", "phone_numbers", "email")
+        }),
+        ("Дополнительно", {
+            "fields": ("map_link", "social_links")
+        }),
+    )
 
-    def has_change_permission(self, request, obj=None):
-        return True
+    class Meta:
+        verbose_name = "Контактная информация"
+        verbose_name_plural = "Контактные данные"

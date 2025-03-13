@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <h1>Контакты</h1>
+    <p>Адрес: {{ contact_info.address }}</p>
+
+    <h2>Телефонные номера</h2>
+    <ul>
+        {% for number in contact_info.phone_numbers %}
+            <li>{{ number }}</li>
+        {% endfor %}
+    </ul>
+
+    <p>Email: {{ contact_info.email }}</p>
+
+    <h2>Карта</h2>
+    <a href="{{ contact_info.map_link }}" target="_blank">Открыть карту</a>
+
+    <h2>Социальные сети</h2>
+    <ul>
+        {% for platform, link in contact_info.social_links.items %}
+            <li><a href="{{ link }}" target="_blank">{{ platform }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
