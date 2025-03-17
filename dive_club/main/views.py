@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import (
     HomePageContent, Event, EventImage, EquipmentPageContent,
-    GalleryImage, TrainingPage, AboutPage, ContactPage
+    GalleryImage, TrainingPage, AboutPage, ContactPage, TermsOfService,
+    PrivacyPolicy
 )
+
+from .forms import ApplicationForm
 
 
 def home(request):
@@ -66,12 +69,13 @@ def contacts(request):
     return render(request, 'main/contacts.html', {'contact_info': contact_info})
 
 
-def privacy_policy(request):
-    return render(request, 'privacy_policy.html')
-
-
 def terms_of_service(request):
-    return render(request, 'terms_of_service.html')
+    terms = TermsOfService.objects.first()  # Получаем первые условия
+    return render(request, 'main/terms_of_service.html', {'terms': terms})
+
+def privacy_policy(request):
+    policy = PrivacyPolicy.objects.first()  # Получаем первую политику
+    return render(request, 'main/privacy_policy.html', {'policy': policy})
 
 
 def event_create(request):
@@ -98,3 +102,19 @@ def event_create(request):
 def gallery(request):
     images = GalleryImage.objects.all().order_by('-uploaded_at')  # Сортируем от новых к старым
     return render(request, 'main/gallery.html', {'images': images})
+
+
+def application_view(request):
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('application_success')  # Перенаправляем на страницу успешной заявки
+    else:
+        form = ApplicationForm()
+
+    return render(request, 'main/application.html', {'form': form})
+
+
+def application_success(request):
+    return render(request, 'main/application_success.html')

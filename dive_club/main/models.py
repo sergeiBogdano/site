@@ -3,17 +3,20 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+
 # Валидация для изображений
 def validate_image_file_size(value):
     limit = 5 * 1024 * 1024  # 5 MB
     if value.size > limit:
         raise ValidationError('Максимальный размер файла 5MB')
 
+
 # Валидация для видео
 def validate_video_file_size(value):
     limit = 50 * 1024 * 1024  # 50 MB
     if value.size > limit:
         raise ValidationError('Максимальный размер файла 50MB')
+
 
 # Валидация для форматов файлов
 def validate_file_extension(value):
@@ -73,7 +76,7 @@ class HomePageContent(models.Model):
         verbose_name="Малый текст"
     )
 
-    overlay_video_text = models.CharField(  # Новое поле для текста на видео
+    overlay_video_text = models.CharField(
         max_length=255,
         blank=True,
         null=True,
@@ -215,7 +218,8 @@ class EquipmentPageContent(models.Model):
         verbose_name="Фоновое изображение",
         validators=[validate_image_file_size, validate_file_extension]
     )
-    equipment = models.ManyToManyField(Equipment, related_name="equipment_page", blank=True, verbose_name="Список оборудования")
+    equipment = models.ManyToManyField(Equipment, related_name="equipment_page", blank=True,
+                                       verbose_name="Список оборудования")
 
     def __str__(self):
         return "Контент страницы оборудования"
@@ -374,3 +378,45 @@ class ContactPage(models.Model):
 
     def __str__(self):
         return "Контактная информация"
+
+
+class TermsOfService(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Правила пользования"
+        verbose_name_plural = "Правила пользования"
+
+    def __str__(self):
+        return "Правила пользования"
+
+
+class PrivacyPolicy(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Политика конфиденциальности"
+        verbose_name_plural = "Политика конфиденциальности"
+
+    def __str__(self):
+        return "Политика конфиденциальности"
+
+
+class Application(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Заявка от {self.name}'
+
+    class Meta:
+        verbose_name = "Заявка"
+        verbose_name_plural = "Заявки"

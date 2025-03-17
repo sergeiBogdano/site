@@ -1,5 +1,5 @@
 from django import forms
-from .models import HomePageContent, Equipment, EquipmentPageContent, GalleryImage, ContactPage
+from .models import HomePageContent, Equipment, EquipmentPageContent, GalleryImage, ContactPage, Application
 
 
 class HomePageContentForm(forms.ModelForm):
@@ -75,3 +75,9 @@ class ContactPageForm(forms.ModelForm):
     class Meta:
         model = ContactPage
         fields = ['address', 'phone_numbers', 'email', 'social_links']
+
+
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['name', 'email', 'message']

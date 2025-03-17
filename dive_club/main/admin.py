@@ -6,7 +6,8 @@ from .models import (
     Equipment, GalleryImage,
     TrainingPage, TrainingImage,
     TrainingVideo, AboutPage,
-    ContactPage
+    ContactPage, TermsOfService,
+    PrivacyPolicy, Application
 )
 from .forms import (
     HomePageContentForm,
@@ -14,6 +15,7 @@ from .forms import (
     EquipmentForm,
     GalleryImageForm,
     ContactPageForm
+
 )
 
 
@@ -161,3 +163,9 @@ class ContactPageAdmin(admin.ModelAdmin):
     class Meta:
         verbose_name = "Контактная информация"
         verbose_name_plural = "Контактные данные"
+
+
+
+admin.site.register(TermsOfService)
+admin.site.register(PrivacyPolicy)
+admin.site.register(Application)
