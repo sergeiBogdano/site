@@ -22,16 +22,30 @@
 
 <!-- Фотография с текстовым оверлеем -->
 <section class="photo-section">
-    {% if homepage_content and homepage_content.background_photo %}
-        <img src="{{ homepage_content.background_photo.url }}" alt="Фоновое изображение">
-    {% else %}
-        <div class="placeholder photo-placeholder">
-            <p>Пока нет изображения</p>
+    <div class="big-photo-text">
+        {% if homepage_content and homepage_content.background_photo %}
+            <img src="{{ homepage_content.background_photo.url }}" alt="Фоновое изображение" class="big-photo">
+        {% else %}
+            <div class="placeholder photo-placeholder">
+                <p>Пока нет изображения</p>
+            </div>
+        {% endif %}
+        <div class="overlay-text">
+            <h1>{{ homepage_content.big_text|default:"Пока нет текста" }}</h1>
         </div>
-    {% endif %}
-    <div class="overlay-text">
-        <h1>{{ homepage_content.big_text|default:"Пока нет текста" }}</h1>
-        <p>{{ homepage_content.small_text|default:"Пока нет текста" }}</p>
+    </div>
+
+    <div class="small-photo-text">
+        {% if homepage_content.small_photo %}
+            <img src="{{ homepage_content.small_photo.url }}" alt="Маленькое изображение" class="small-photo">
+        {% else %}
+            <div class="placeholder small-photo-placeholder">
+                <p>Пока нет маленького изображения</p>
+            </div>
+        {% endif %}
+        <div class="overlay-text">
+            <p>{{ homepage_content.small_text|default:"Пока нет текста" }}</p>
+        </div>
     </div>
 </section>
 

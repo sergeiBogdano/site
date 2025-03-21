@@ -4,7 +4,6 @@ from .models import (
     GalleryImage, TrainingPage, AboutPage, ContactPage, TermsOfService,
     PrivacyPolicy
 )
-
 from .forms import ApplicationForm
 
 
@@ -18,8 +17,8 @@ def home(request):
         'discount_description': homepage_content.discount_description if homepage_content else None,
         'discount_percentage': homepage_content.discount_percentage if homepage_content else None,
         'instructor_room_photo': homepage_content.instructor.room_photo.url
-        if homepage_content and homepage_content.instructor and homepage_content.instructor.room_photo
-        else None,
+            if homepage_content and homepage_content.instructor and homepage_content.instructor.room_photo
+            else None,
         'events': homepage_content.events.all() if homepage_content else [],
     }
     return render(request, 'main/home.html', context)
@@ -30,11 +29,10 @@ def gift_certificate_create(request):
         tg_id = request.POST.get('tg_id')
         if tg_id:
             homepage_content = HomePageContent.objects.first()
-            if homepage_content:
-                homepage_content.tg_id = tg_id
-                homepage_content.save()
-                return redirect('home')  # Измени на правильное имя маршрута
-    return render(request, 'your_template.html')
+            homepage_content.tg_id = tg_id
+            homepage_content.save()
+            return redirect('home')
+    return render(request, 'main/gift_certificate.html')
 
 
 def about(request):
@@ -50,8 +48,8 @@ def about(request):
 
 
 def training(request):
-    training = TrainingPage.objects.first()
-    return render(request, "main/training.html", {"training": training})
+    training_page = TrainingPage.objects.first()
+    return render(request, "main/training.html", {"training": training_page})
 
 
 def equipment(request):
@@ -65,16 +63,17 @@ def equipment(request):
 
 
 def contacts(request):
-    contact_info = ContactPage.objects.first()  # Предполагаем, что объект один
+    contact_info = ContactPage.objects.first()
     return render(request, 'main/contacts.html', {'contact_info': contact_info})
 
 
 def terms_of_service(request):
-    terms = TermsOfService.objects.first()  # Получаем первые условия
+    terms = TermsOfService.objects.first()
     return render(request, 'main/terms_of_service.html', {'terms': terms})
 
+
 def privacy_policy(request):
-    policy = PrivacyPolicy.objects.first()  # Получаем первую политику
+    policy = PrivacyPolicy.objects.first()
     return render(request, 'main/privacy_policy.html', {'policy': policy})
 
 
@@ -82,25 +81,23 @@ def event_create(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
-        images = request.FILES.getlist('images')  # Получаем список загруженных файлов
+        images = request.FILES.getlist('images')  # Список загруженных файлов
 
         homepage_content = HomePageContent.objects.first()
-        if homepage_content:  # Проверяем, что HomePageContent есть в базе
-            event = Event.objects.create(title=title, description=description)
-            event.homepage_content.add(homepage_content)  # Правильная связь ManyToMany
+        event = Event.objects.create(title=title, description=description)
+        event.homepage_content.add(homepage_content)
 
-            # Создаем объекты EventImage
-            EventImage.objects.bulk_create([
-                EventImage(event=event, image=image) for image in images
-            ])
+        # Создаем объекты EventImage
+        EventImage.objects.bulk_create([
+            EventImage(event=event, image=image) for image in images
+        ])
 
-            return redirect('home')  # Перенаправляем на главную страницу или нужный маршрут
-
-    return render(request, 'event_create.html')
+        return redirect('home')
+    return render(request, 'main/event_create.html')
 
 
 def gallery(request):
-    images = GalleryImage.objects.all().order_by('-uploaded_at')  # Сортируем от новых к старым
+    images = GalleryImage.objects.all().order_by('-uploaded_at')
     return render(request, 'main/gallery.html', {'images': images})
 
 
@@ -109,10 +106,9 @@ def application_view(request):
         form = ApplicationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('application_success')  # Перенаправляем на страницу успешной заявки
+            return redirect('application_success')
     else:
         form = ApplicationForm()
-
     return render(request, 'main/application.html', {'form': form})
 
 
