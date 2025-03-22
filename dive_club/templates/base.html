@@ -2,51 +2,67 @@
 {% load static %}
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Дайверы{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Дайверы{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
-  <!-- Навигационная панель -->
-  <header>
-    <nav class="navbar">
-      <div class="container">
-        <a href="{% url 'home' %}" class="navbar-brand">Дайверы</a>
-        <ul class="navbar-menu">
-          <li><a href="{% url 'about' %}">О нас</a></li>
-          <li><a href="{% url 'training' %}">обучение</a></li>
-          <li><a href="{% url 'equipment' %}">Оборудование</a></li>
-          <li><a href="{% url 'contacts' %}">Контакты</a></li>
-          <li><a href="{% url 'gallery' %}">Галерея</a></li>
-          <li><a href="{% url 'application' %}">Заявка</a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
+    <!-- Навигационная панель -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="{% url 'home' %}" class="navbar-brand animate__animated animate__fadeIn">
+                    <i class="fas fa-water"></i> Дайверы
+                </a>
+                <ul class="navbar-menu">
+                    <li><a href="{% url 'about' %}" class="{% if request.path == '/about/' %}active{% endif %} animate__animated animate__fadeIn">
+                        <i class="fas fa-info-circle"></i> О нас
+                    </a></li>
+                    <li><a href="{% url 'training' %}" class="{% if request.path == '/training/' %}active{% endif %} animate__animated animate__fadeIn">
+                        <i class="fas fa-graduation-cap"></i> Обучение
+                    </a></li>
+                    <li><a href="{% url 'equipment' %}" class="{% if request.path == '/equipment/' %}active{% endif %} animate__animated animate__fadeIn">
+                        <i class="fas fa-tools"></i> Оборудование
+                    </a></li>
+                    <li><a href="{% url 'contacts' %}" class="{% if request.path == '/contacts/' %}active{% endif %} animate__animated animate__fadeIn">
+                        <i class="fas fa-phone"></i> Контакты
+                    </a></li>
+                    <li><a href="{% url 'gallery' %}" class="{% if request.path == '/gallery/' %}active{% endif %} animate__animated animate__fadeIn">
+                        <i class="fas fa-images"></i> Галерея
+                    </a></li>
+                    <li><a href="{% url 'application' %}" class="{% if request.path == '/application/' %}active{% endif %} animate__animated animate__fadeIn">
+                        <i class="fas fa-file-alt"></i> Заявка
+                    </a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-  <!-- Основной контент страницы -->
-  <main class="container">
-    {% block content %}
-    <!-- Заглушка для контента -->
-    <section class="placeholder">
-      <h2>Добро пожаловать на сайт Дайверов!</h2>
-      <p>Здесь будет основной контент.</p>
-    </section>
-    {% endblock %}
-  </main>
+    <!-- Основной контент страницы -->
+    <main class="container">
+        {% block content %}
+        <!-- Заглушка для контента -->
+        <section class="placeholder">
+            <h2>Добро пожаловать на сайт Дайверов!</h2>
+            <p>Здесь будет основной контент.</p>
+        </section>
+        {% endblock %}
+    </main>
 
-  <!-- Нижний колонтитул -->
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; {{ current_year|default:"2025" }} Дайверы. Все права защищены.</p>
-      <ul class="footer-links">
-        <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
-        <li><a href="{% url 'terms_of_service' %}">Условия использования</a></li>
-      </ul>
-    </div>
-  </footer>
+    <!-- Нижний колонтитул -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; {{ current_year|default:"2025" }} Дайверы. Все права защищены.</p>
+            <ul class="footer-links">
+                <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
+                <li><a href="{% url 'terms_of_service' %}">Условия использования</a></li>
+            </ul>
+        </div>
+    </footer>
 
-  <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

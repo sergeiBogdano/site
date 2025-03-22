@@ -1,546 +1,525 @@
 /* --- Основные переменные --- */
 :root {
-  --primary-color: #2a5298;       /* Темно-синий основной цвет */
-  --secondary-color: #1e3c72;     /* Более темный синий для акцентов */
-  --accent-color: #ffd700;         /* Акцентный цвет (золотой) */
-  --text-color: #ffffff;           /* Цвет текста (белый) */
-  --outline-color: #000000;        /* Цвет обводки текста (черный) */
-  /* Градиент фона от светло-розового к песочному */
-  --bg-gradient: linear-gradient(to bottom, #f8cfd7, #fef4e0);
-  --transition-speed: 0.4s;        /* Скорость переходов */
+    --primary-color: #00B4DB;       /* Основной цвет (яркий голубой) */
+    --secondary-color: #0083B0;    /* Вторичный цвет (темно-голубой) */
+    --accent-color: #FF6F61;       /* Акцентный цвет (коралловый) */
+    --background-color: #005F73;   /* Темно-синий фон для подводного мира */
+    --text-color: #FFFFFF;         /* Белый текст для контраста */
+    --glass-effect: rgba(255, 255, 255, 0.1); /* Стеклянный эффект */
+    --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Градиент */
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Тень */
+    --transition-speed: 0.4s;      /* Скорость переходов */
 }
 
-/* --- Сброс стилей и базовые настройки --- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box; /* Устанавливает box-sizing для всех элементов */
-}
-
+/* --- Общие стили --- */
 body {
-  font-family: 'Montserrat', sans-serif; /* Шрифт сайта */
-  background: var(--bg-gradient); /* Фоновый градиент */
-  color: var(--text-color); /* Цвет текста */
-  line-height: 1.6; /* Высота строки */
-  overflow-x: hidden; /* Скрывает горизонтальную полосу прокрутки */
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: auto;
+    min-height: 100vh; /* Фон на всю высоту страницы */
 }
 
+/* --- Фон с эффектом подводного мира --- */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,
+        rgba(0, 95, 115, 1) 0%,       /* Темно-синий сверху */
+        rgba(0, 60, 80, 1) 50%,       /* Средний слой */
+        rgba(0, 30, 50, 1) 100%       /* Самый глубокий слой */
+    ), url('waves.png'); /* Текстура волн (можно заменить на свою) */
+    background-size: cover;
+    background-position: center;
+    z-index: -1; /* Фон позади контента */
+    animation: waterMovement 20s linear infinite; /* Анимация движения воды */
+}
+
+@keyframes waterMovement {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+/* --- Контейнер --- */
 .container {
-  max-width: 1200px; /* Максимальная ширина контейнера */
-  margin: 0 auto; /* Центрирование контейнера */
-  padding: 20px; /* Отступы внутри контейнера */
-}
-
-/* --- Анимация появления --- */
-.before-appear {
-  opacity: 0; /* Прозрачность по умолчанию */
-  transform: translateY(30px); /* Сдвиг вниз */
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Переходы для анимации */
-}
-
-.appear {
-  opacity: 1; /* Полная непрозрачность */
-  transform: translateY(0); /* Возвращение на место */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1; /* Контент поверх фона */
 }
 
 /* --- Навигационная панель --- */
 .navbar {
-  background-color: rgba(0, 0, 0, 0.85); /* Полупрозрачный черный фон */
-  padding: 15px 0; /* Отступы */
-  position: sticky; /* Фиксированное положение */
-  top: 0; /* На верхней границе */
-  z-index: 1100; /* Слой над другими элементами */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.6); /* Тень под панелью */
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow);
 }
 
 .navbar .container {
-  display: flex; /* Гибкая верстка */
-  align-items: center; /* Выравнивание по вертикали */
-  justify-content: space-between; /* Распределение пространства между элементами */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .navbar-brand {
-  font-size: 1.8em; /* Размер текста для названия */
-  font-weight: 700; /* Жирный текст */
-  color: var(--text-color); /* Цвет текста */
-  text-decoration: none; /* Без подчеркивания */
-  transition: color var(--transition-speed) ease; /* Переход при наведении */
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform var(--transition-speed) ease;
 }
 
 .navbar-brand:hover {
-  color: var(--accent-color); /* Цвет при наведении */
+    transform: scale(1.05);
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+    color: var(--accent-color);
 }
 
 .navbar-menu {
-  list-style: none; /* Без маркеров списка */
-  display: flex; /* Гибкая верстка */
-  margin: 0; /* Без отступов */
-  padding: 0; /* Без отступов */
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-menu li {
-  margin-left: 15px; /* Отступ между элементами меню */
+    position: relative;
 }
 
 .navbar-menu a {
-  color: var(--text-color); /* Цвет текста ссылок */
-  text-decoration: none; /* Без подчеркивания */
-  font-size: 1em; /* Размер текста для ссылок */
-  padding: 6px 10px; /* Отступы внутри ссылок */
-  border-radius: 4px; /* Закругление углов */
-  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease; /* Переходы */
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all var(--transition-speed) ease;
 }
 
 .navbar-menu a:hover {
-  background-color: var(--text-color); /* Фон при наведении */
-  color: var(--primary-color); /* Цвет текста при наведении */
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.navbar-menu a i {
+    font-size: 1.2rem;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-speed) ease;
+}
+
+.navbar-menu a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.navbar-menu a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--accent-color);
+    box-shadow: var(--shadow);
+}
+
+.navbar {
+    animation: slideInDown 0.8s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-menu {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .navbar-menu a {
+        width: 100%;
+        text-align: left;
+    }
 }
 
 /* --- Видео секция --- */
 .video-section {
-  position: relative; /* Относительное позиционирование для вложенных элементов */
-  margin-bottom: 40px; /* Отступ снизу */
+    position: relative;
+    margin-bottom: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
 }
 
 .video-section video {
-  width: 100%; /* Ширина видео */
-  max-width: 1000px; /* Максимальная ширина видео */
-  display: block; /* Блоковое отображение */
-  margin: 0 auto; /* Центрирование */
-  border-radius: 12px; /* Закругление углов видео */
-  object-fit: cover; /* Сохранение пропорций */
+    width: 100%;
+    display: block;
+    border-radius: 20px;
 }
 
 .video-overlay-text {
-  position: absolute; /* Абсолютное позиционирование */
-  bottom: 20px; /* Отступ от низа */
-  left: 50%; /* Центрирование по горизонтали */
-  transform: translateX(-50%); /* Сдвиг влево на 50% ширины */
-  font-size: clamp(0.6em, 2vw, 1em); /* Адаптивный размер шрифта */
-  font-weight: bold; /* Жирный текст */
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.8); /* Тень для читаемости */
-  padding: 10px 20px; /* Отступы */
-  border-radius: 8px; /* Закругление углов */
-  color: var(--text-color); /* Цвет текста */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка */
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    box-shadow: var(--shadow);
+    animation: fadeIn 1s ease-out;
 }
 
-/* --- Фото секция с текстовым оверлеем --- */
+/* --- Стили для фото секции --- */
 .photo-section {
-  position: relative; /* Относительное позиционирование */
-  display: flex; /* Гибкая верстка */
-  justify-content: flex-end; /* Выравнивание по правому краю */
-  align-items: center; /* Выравнивание по вертикали */
-  margin-bottom: 40px; /* Отступ снизу */
-  overflow: hidden; /* Скрытие переполнения */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-.photo-section img {
-  width: 60%; /* Ширина изображения */
-  height: auto; /* Автоматическая высота */
-  display: block; /* Блоковое отображение */
-  border-radius: 12px; /* Закругление углов изображения */
-  object-fit: cover; /* Сохранение пропорций */
+.big-photo-text, .small-photo-text {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform var(--transition-speed) ease;
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
 }
 
+.big-photo-text:hover, .small-photo-text:hover {
+    transform: scale(1.02);
+}
+
+.big-photo, .small-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform var(--transition-speed) ease;
+}
+
+.big-photo:hover, .small-photo:hover {
+    transform: scale(1.05); /* Картинка становится чуть ближе */
+}
+
+/* --- Эффект наложения текста --- */
 .overlay-text {
-  position: absolute; /* Абсолютное позиционирование */
-  left: 0; /* Привязка к левому краю */
-  top: 50%; /* Центрирование по вертикали */
-  transform: translateY(-50%); /* Сдвиг вверх на 50% высоты */
-  max-width: 50%; /* Максимальная ширина текстового блока */
-  background: rgba(0, 0, 0, 0.65); /* Полупрозрачный фон */
-  padding: 10px; /* Отступы */
-  border-radius: 8px; /* Закругление углов */
-  color: #fff; /* Цвет текста */
-  overflow: hidden; /* Скрытие переполнения */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6); /* Полупрозрачный черный фон */
+    padding: 10px;
+    border-radius: 0 0 20px 20px; /* Скругление только снизу */
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white; /* Белый текст для контраста */
+    text-align: center;
+    transition: opacity var(--transition-speed) ease;
+    opacity: 1; /* Текст виден по умолчанию */
 }
 
-.overlay-text h1 {
-  font-size: clamp(1em, 2vw, 1.25em); /* Адаптивный размер шрифта заголовка */
-  margin-bottom: 5px; /* Отступ снизу */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка для заголовка */
+.big-photo-text:hover .overlay-text, .small-photo-text:hover .overlay-text {
+    opacity: 0; /* Текст пропадает при наведении */
 }
 
-.overlay-text p {
-  font-size: clamp(0.9em, 3vw, 1.2em); /* Адаптивный размер шрифта для параграфа */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка для текста */
+/* --- Стили для иконок --- */
+.icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-right: 10px;
 }
 
-/* --- Секция инструктора --- */
+/* --- Стили для секции инструктора --- */
 .diver-section {
-  margin-bottom: 40px; /* Отступ снизу */
+    margin-bottom: 40px;
 }
 
 .instructor-info {
-  display: flex; /* Гибкая верстка */
-  align-items: center; /* Выравнивание по вертикали */
-  padding: 20px; /* Отступы внутри блока */
-  background: rgba(0,0,0,0.8); /* Полупрозрачный фон */
-  border-radius: 12px; /* Закругление углов */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5); /* Тень */
+    display: flex;
+    align-items: center;
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 1s ease-out;
+    transition: transform var(--transition-speed) ease;
+}
+
+.instructor-info:hover {
+    transform: scale(1.02); /* Легкое увеличение при наведении */
 }
 
 .instructor-images {
-  margin-right: 20px; /* Отступ справа */
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
-.avatar {
-  width: 150px; /* Ширина аватара */
-  height: 150px; /* Высота аватара */
-  border-radius: 50%; /* Круглая форма */
-  object-fit: cover; /* Сохранение пропорций */
-  border: 4px solid var(--text-color); /* Рамка вокруг аватара */
+.avatar, .room-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: var(--shadow);
+    transition: transform var(--transition-speed) ease;
+    cursor: pointer; /* Курсор в виде указателя */
 }
 
-.room-photo {
-  width: 200px; /* Ширина изображения комнаты */
-  margin-top: 10px; /* Отступ сверху */
-  border-radius: 10px; /* Закругление углов */
+.avatar:hover, .room-photo:hover {
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+
+.instructor-text {
+    margin-left: 20px;
 }
 
 .instructor-text h2 {
-  font-size: 2em; /* Размер заголовка */
-  margin-bottom: 10px; /* Отступ снизу */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка для заголовка */
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 .instructor-text p {
-  font-size: 1em; /* Размер текста */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка для текста */
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.6;
 }
 
-/* --- Секция скидок --- */
-.discount-section {
-  text-align: center; /* Центрирование текста */
-  margin-bottom: 40px; /* Отступ снизу */
+/* --- Стили для placeholder --- */
+.placeholder.instructor-info-placeholder {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    color: var(--text-color);
+    font-size: 1rem;
 }
 
+/* --- Адаптивность для секции инструктора --- */
+@media (max-width: 768px) {
+    .instructor-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .instructor-images {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .avatar, .room-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .instructor-text {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .instructor-text h2 {
+        font-size: 1.8rem;
+    }
+
+    .instructor-text p {
+        font-size: 0.9rem;
+    }
+}
+
+/* --- Стили для секции скидок --- */
 .discount-content {
-  background: rgba(18, 47, 181, 0.9); /* Полупрозрачный фон для блока скидок */
-  padding: 20px 25px; /* Отступы */
-  border-radius: 12px; /* Закругление углов */
-  display: inline-block; /* Блок с шириной, зависящей от содержимого */
-  max-width: 90%; /* Максимальная ширина */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6); /* Тень */
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    animation: fadeIn 1s ease-out;
 }
 
 .discount-content h3 {
-  font-size: 2em; /* Размер заголовка скидок */
-  margin-bottom: 10px; /* Отступ снизу */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка для заголовка */
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 .original-price {
-  font-size: 1.1em; /* Размер оригинальной цены */
-  color: #ff4c4c; /* Цвет для оригинальной цены */
+    font-size: 1.5rem;
+    color: #FF4C4C;
+    text-decoration: line-through;
 }
 
 .discounted-price {
-  font-size: 1.5em; /* Размер со скидкой */
-  color: #4cff4c; /* Цвет для цены со скидкой */
-  margin-bottom: 10px; /* Отступ снизу */
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-/* --- Секция подарочных сертификатов --- */
+/* --- Стили для секции подарочных сертификатов --- */
 .gift-certificates-section {
-  display: flex; /* Гибкая верстка */
-  flex-wrap: wrap; /* Перенос элементов на новую строку */
-  justify-content: center; /* Центрирование содержимого */
-  align-items: center; /* Вертикальное выравнивание */
-  margin-bottom: 40px; /* Отступ снизу */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
 }
 
 .gift-certificates-section img {
-  max-width: 250px; /* Максимальная ширина изображения сертификата */
-  border-radius: 12px; /* Закругление углов */
-  margin-bottom: 20px; /* Отступ снизу */
-  transition: transform 0.5s ease; /* Переход при наведении */
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    transition: transform var(--transition-speed) ease;
 }
 
 .gift-certificates-section img:hover {
-  transform: scale(1.05); /* Увеличение при наведении */
+    transform: scale(1.05);
 }
 
 .gift-certificate-form {
-  margin-left: 20px; /* Отступ слева */
-  max-width: 250px; /* Максимальная ширина формы */
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 1s ease-out;
 }
 
 .gift-certificate-form h3 {
-  margin-bottom: 10px; /* Отступ снизу */
-  font-size: 1.5em; /* Размер заголовка формы */
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 .gift-certificate-form input[type="text"] {
-  width: 100%; /* Ширина поля ввода */
-  padding: 10px; /* Отступы внутри поля ввода */
-  border: none; /* Без рамки */
-  border-radius: 5px; /* Закругление углов */
-  margin-bottom: 10px; /* Отступ снизу */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 1rem;
 }
 
 .gift-certificate-form button {
-  width: 100%; /* Ширина кнопки */
-  padding: 10px; /* Отступы внутри кнопки */
-  background-color: var(--primary-color); /* Фоновый цвет кнопки */
-  color: var(--text-color); /* Цвет текста кнопки */
-  border: none; /* Без рамки */
-  border-radius: 5px; /* Закругление углов кнопки */
-  cursor: pointer; /* Указатель при наведении */
-  transition: background-color var(--transition-speed) ease; /* Переход при наведении */
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease;
 }
 
 .gift-certificate-form button:hover {
-  background-color: var(--secondary-color); /* Цвет кнопки при наведении */
+    background-color: var(--accent-color);
 }
 
-/* --- Секция мероприятий --- */
+/* --- Стили для секции мероприятий --- */
 .events-section {
-  text-align: center; /* Центрирование текста */
-  margin-bottom: 40px; /* Отступ снизу */
+    margin-bottom: 40px;
 }
 
 .event-images {
-  display: flex; /* Гибкая верстка */
-  align-items: center; /* Выравнивание по вертикали */
-  justify-content: center; /* Центрирование содержимого */
-  gap: 0;  /* Без промежутков для наложения */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
 }
 
 .event-item {
-  background: rgba(0, 0, 0, 0.85); /* Фон элемента мероприятия */
-  padding: 15px; /* Отступы */
-  border-radius: 12px; /* Закругление углов */
-  width: 260px; /* Ширина элемента мероприятия */
-  text-align: left; /* Выравнивание текста по левому краю */
-  position: relative; /* Относительное позиционирование */
-  margin-left: -130px; /* Сдвиг для наложения */
-  transition: transform 0.3s ease, margin 0.3s ease, z-index 0.3s ease; /* Переходы */
-}
-
-.event-item:first-child {
-  margin-left: 0; /* Сброс сдвига для первого элемента */
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    transition: transform var(--transition-speed) ease;
+    animation: fadeIn 1s ease-out;
 }
 
 .event-item:hover {
-  transform: scale(1.05); /* Увеличение при наведении */
-  z-index: 10; /* Повышение слоя при наведении */
-  margin-left: 0; /* Полное отображение при наведении */
+    transform: scale(1.05);
 }
 
 .event-title {
-  font-size: 1.4em; /* Размер заголовка мероприятия */
-  font-weight: bold; /* Жирный текст */
-  margin-bottom: 10px; /* Отступ снизу */
-  text-outline: 1px var(--outline-color); /* Тонкая черная обводка для заголовка */
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 .event-description {
-  font-size: 0.9em; /* Размер описания мероприятия */
-  margin-bottom: 10px; /* Отступ снизу */
-  color: #ccc; /* Цвет описания */
+    font-size: 1.2rem;
+    color: var(--text-color);
 }
 
-.event-item .event-image {
-  width: 100%; /* Ширина изображения мероприятия */
-  border-radius: 8px; /* Закругление углов изображения */
-  margin-bottom: 10px; /* Отступ снизу */
-  cursor: pointer; /* Указатель при наведении */
-  transition: opacity 0.3s ease; /* Переход при наведении */
+.event-image {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
 
-.event-item .event-image:hover {
-  opacity: 0.85; /* Прозрачность при наведении */
-}
-
-/* --- Лайтбокс для изображений мероприятий --- */
-#lightbox {
-  position: fixed; /* Фиксированное положение лайтбокса */
-  top: 0; /* Привязка к верхней границе */
-  left: 0; /* Привязка к левой границе */
-  width: 100%; /* Ширина 100% */
-  height: 100%; /* Высота 100% */
-  background: rgba(0, 0, 0, 0.9); /* Полупрозрачный фон */
-  display: flex; /* Flex-контейнер */
-  justify-content: center; /* Центрирование содержимого */
-  align-items: center; /* Выравнивание по вертикали */
-  opacity: 0; /* Прозрачность по умолчанию */
-  pointer-events: none; /* Блокировка событий мыши */
-  transition: opacity 0.4s ease; /* Переход при активации */
-  z-index: 1100; /* Слой над другими элементами */
-}
-
-#lightbox.active {
-  opacity: 1; /* Полная непрозрачность при активации */
-  pointer-events: auto; /* Включение событий мыши */
-}
-
-#lightbox img {
-  max-width: 90%; /* Максимальная ширина изображения */
-  max-height: 90%; /* Максимальная высота изображения */
-  border-radius: 10px; /* Закругление углов изображения */
-  box-shadow: 0 6px 20px rgba(0,0,0,0.7); /* Тень */
-}
-
-/* --- Стрелки в лайтбоксе --- */
-.lightbox a.prev, .lightbox a.next {
-  position: absolute; /* Абсолютное позиционирование */
-  top: 50%; /* Центрирование по вертикали */
-  transform: translateY(-50%); /* Сдвиг вверх */
-  font-size: 3em; /* Размер стрелок */
-  color: #fff; /* Цвет стрелок */
-  text-decoration: none; /* Без подчеркивания */
-  padding: 10px; /* Отступы */
-  cursor: pointer; /* Указатель при наведении */
-  user-select: none; /* Запрет выбора текста */
-  transition: color 0.3s ease; /* Переход для цвета */
-}
-
-.lightbox a.prev:hover, .lightbox a.next:hover {
-  color: var(--accent-color); /* Цвет стрелок при наведении */
-}
-
-.lightbox a.prev {
-  left: 20px; /* Сдвиг влево */
-}
-
-.lightbox a.next {
-  right: 20px; /* Сдвиг вправо */
-}
-
-/* --- Секция hero для страницы оборудования */
-.equipment-hero {
-  position: relative; /* Относительное позиционирование */
-  width: 100%; /* Ширина 100% */
-  height: 400px; /* Фиксированная высота */
-  background-size: cover; /* Масштабирование фона */
-  background-position: center; /* Центрирование фона */
-  margin-bottom: 40px; /* Отступ снизу */
-  display: flex; /* Гибкая верстка */
-  align-items: center; /* Выравнивание по вертикали */
-  justify-content: center; /* Центрирование содержимого */
-}
-
-.equipment-hero .overlay {
-  background: rgba(0, 0, 0, 0.6); /* Полупрозрачный фон */
-  width: 100%; /* Ширина 100% */
-  height: 100%; /* Высота 100% */
-  padding: 20px; /* Отступы */
-  text-align: center; /* Центрирование текста */
-  display: flex; /* Гибкая верстка */
-  flex-direction: column; /* Вертикальное расположение элементов */
-  justify-content: center; /* Центрирование содержимого */
-}
-
-.equipment-hero h1 {
-  font-size: 3em; /* Размер заголовка в hero секции */
-  margin-bottom: 10px; /* Отступ снизу */
-}
-
-.equipment-hero p {
-  font-size: 1.3em; /* Размер текста в hero секции */
-}
-
-/* --- Секция списка оборудования */
-.equipment-list {
-  padding: 20px; /* Отступы */
-  text-align: center; /* Центрирование текста */
-}
-
-.equipment-list h2 {
-  font-size: 2.5em; /* Размер заголовка для списка оборудования */
-  margin-bottom: 20px; /* Отступ снизу */
-}
-
-.equipment-items {
-  display: flex; /* Гибкая верстка */
-  flex-wrap: wrap; /* Перенос элементов на новую строку */
-  justify-content: center; /* Центрирование содержимого */
-  gap: 20px; /* Промежутки между элементами */
-}
-
-/* Секция снаряжение */
-.equipment-item {
-  background: rgba(0, 0, 0, 0.85); /* Фон элемента оборудования */
-  padding: 20px; /* Отступы */
-  border-radius: 10px; /* Закругление углов */
-  width: 300px; /* Ширина элемента */
-  text-align: left; /* Выравнивание текста по левому краю */
-  transition: transform 0.3s ease; /* Переход при наведении */
-}
-
-.equipment-item:hover {
-  transform: scale(1.03); /* Увеличение при наведении */
-}
-
-.equipment-image {
-  width: 100%; /* Ширина изображения */
-  height: auto; /* Автоматическая высота */
-  border-radius: 8px; /* Закругление углов изображения */
-  margin-bottom: 10px; /* Отступ снизу */
-}
-
-.equipment-item h3 {
-  font-size: 1.5em; /* Размер заголовка элемента */
-  margin-bottom: 10px; /* Отступ снизу */
-}
-
-.equipment-item p {
-  font-size: 1em; /* Размер текста в элементе */
-  color: #ccc; /* Цвет текста в элементе */
-}
-
-/* --- Стили для галереи --- */
-.gallery-container {
-  padding: 20px; /* Отступы */
-}
-
-.gallery-grid {
-  display: flex; /* Гибкая верстка */
-  flex-wrap: wrap; /* Перенос элементов на новую строку */
-  gap: 15px; /* Промежутки между элементами */
-  justify-content: center; /* Центрирование содержимого */
-}
-
-.gallery-item {
-  width: 200px; /* Ширина элемента галереи */
-  height: 200px; /* Высота элемента галереи */
-  object-fit: cover; /* Сохранение пропорций изображения */
-  cursor: pointer; /* Указатель при наведении */
-  transition: transform 0.3s ease; /* Переход при наведении */
-  border-radius: 8px; /* Закругление углов */
-}
-
-.gallery-item:hover {
-  transform: scale(1.05); /* Увеличение при наведении */
-}
-
-/* --- Лайтбокс --- */
-.lightbox {
-  position: fixed; /* Фиксированное положение */
-  top: 0; /* Привязка к верхней границе */
-  left: 0; /* Привязка к левой границе */
-  width: 100%; /* Ширина 100% */
-  height: 100%; /* Высота 100% */
-  background: rgba(0,0,0,0.9); /* Полупрозрачный фон */
-  display: flex; /* Flex-контейнер */
-  justify-content: center; /* Центрирование содержимого */
-  align-items: center; /* Выравнивание по вертикали */
-  opacity: 0; /* Прозрачность по умолчанию */
-  pointer-events: none; /* Блокировка событий мыши */
-  transition: opacity 0.4s ease; /* Переход при активации */
-  z-index: 1100; /* Слой над другими элементами */
-}
-
-.lightbox.active {
-  opacity: 1; /* Полная непрозрачность при активации */
-  pointer-events: auto; /* Включение событий мыши */
-}
-
-.lightbox-content {
-  max-width: 90%; /* Максимальная ширина содержимого */
-  max-height: 90%; /* Максимальная высота содержимого */
-  border-radius: 10px; /* Закругление углов */
-  box-shadow: 0 6px 20px rgba(0,0,0,0.7); /* Тень */
+/* --- Анимации --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
