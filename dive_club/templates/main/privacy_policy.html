@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ policy.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ policy.title }}</h1>
+    <p><strong>Дата обновления:</strong> {{ policy.updated_at|date:"d.m.Y" }}</p>
+    <div class="content">
+        {{ policy.content|safe }}
+    </div>
+</div>
+{% endblock %}
