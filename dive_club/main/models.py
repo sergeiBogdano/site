@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
 # Валидация для изображений
@@ -50,6 +51,7 @@ class Instructor(models.Model):
 
 # Контент главной страницы
 class HomePageContent(models.Model):
+    # Поля для видео
     welcome_video = models.FileField(
         upload_to='videos/',
         blank=True,
@@ -57,6 +59,7 @@ class HomePageContent(models.Model):
         verbose_name="Видео приветствия",
         validators=[validate_video_file_size, validate_file_extension]
     )
+    # Поля для основного контента
     background_photo = models.ImageField(
         upload_to='images/',
         blank=True,
@@ -87,6 +90,7 @@ class HomePageContent(models.Model):
         null=True,
         verbose_name="Текст на видео"
     )
+    # Поля для инструктора
     instructor = models.ForeignKey(
         Instructor,
         on_delete=models.SET_NULL,
@@ -102,11 +106,34 @@ class HomePageContent(models.Model):
         verbose_name="Изображение сертификата",
         validators=[validate_image_file_size, validate_file_extension]
     )
-    tg_id = models.CharField(
+    certificate_title = models.CharField(
         max_length=100,
-        verbose_name="Telegram ID",
         blank=True,
-        null=True
+        null=True,
+        verbose_name="Название сертификата"
+    )
+    certificate_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Описание сертификата"
+    )
+    certificate_validity = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Срок действия сертификата"
+    )
+    certificate_terms = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Условия использования сертификата"
+    )
+    certificate_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="Цена сертификата"
     )
     event_text = models.CharField(
         max_length=100,
@@ -114,55 +141,7 @@ class HomePageContent(models.Model):
         blank=True,
         null=True
     )
-    discount_title = models.CharField(  # Добавлено поле для названия скидки
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name="Название скидки"
-    )
-    discount_description = models.TextField(  # Добавлено поле для описания скидки
-        blank=True,
-        null=True,
-        verbose_name="Описание скидки"
-    )
-    original_price = models.DecimalField(  # Добавлено поле для оригинальной цены
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True,
-        verbose_name="Цена без скидки"
-    )
-    discounted_price = models.DecimalField(  # Добавлено поле для цены со скидкой
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True,
-        verbose_name="Цена со скидкой"
-    )
-    discount_percentage = models.DecimalField(  # Добавлено поле для процента скидки
-        max_digits=5,
-        decimal_places=2,
-        blank=True,
-        null=True,
-        verbose_name="Процент скидки"
-    )
-
-    def __str__(self):
-        return "Контент главной страницы"
-
-    class Meta:
-        verbose_name = "Контент главной страницы"
-        verbose_name_plural = "Контент главной страницы"
-
-
-# Отдельная модель скидок, привязанная к HomePageContent
-class Discount(models.Model):
-    home_page = models.ForeignKey(
-        HomePageContent,
-        on_delete=models.CASCADE,
-        related_name="discounts",
-        verbose_name="Контент главной страницы"
-    )
+    # Поля для скидок
     discount_title = models.CharField(
         max_length=100,
         blank=True,
@@ -173,13 +152,6 @@ class Discount(models.Model):
         blank=True,
         null=True,
         verbose_name="Описание скидки"
-    )
-    discount_percentage = models.DecimalField(
-        max_digits=5,
-        decimal_places=2,
-        blank=True,
-        null=True,
-        verbose_name="Процент скидки"
     )
     original_price = models.DecimalField(
         max_digits=10,
@@ -195,12 +167,28 @@ class Discount(models.Model):
         null=True,
         verbose_name="Цена со скидкой"
     )
+    discount_percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="Процент скидки",
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
+    discount_validity = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="Срок действия скидки"
+    )
 
     def __str__(self):
-        return f"Скидка: {self.discount_title or 'Без названия'}"
+        return "Контент главной страницы"
+
+    class Meta:
+        verbose_name = "Контент главной страницы"
+        verbose_name_plural = "Контент главной страницы"
 
 
-# Мероприятие. Теперь связь с HomePageContent – ManyToMany
 class Event(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название мероприятия")
     description = models.TextField(verbose_name="Описание мероприятия", blank=True, null=True)

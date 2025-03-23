@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Instructor, HomePageContent, Discount,
+    Instructor, HomePageContent,
     Event, EventImage,
     EquipmentPageContent,
     Equipment, GalleryImage,
@@ -14,7 +14,6 @@ from .forms import (
     EquipmentPageContentForm,
     EquipmentForm,
     GalleryImageForm,
-    ContactPageForm
 )
 
 
@@ -33,17 +32,10 @@ class EventImageInline(admin.TabularInline):
 
 
 class EventInline(admin.TabularInline):
-    model = Event.homepage_content.through  # через промежуточную модель ManyToMany
+    model = Event.homepage_content.through
     extra = 1
     verbose_name = "Мероприятие"
     verbose_name_plural = "Мероприятия"
-
-
-class DiscountInline(admin.TabularInline):
-    model = Discount
-    extra = 1
-    verbose_name = "Скидка"
-    verbose_name_plural = "Скидки"
 
 
 @admin.register(Event)
@@ -62,15 +54,34 @@ class InstructorAdmin(admin.ModelAdmin):
 
 
 @admin.register(HomePageContent)
-class HomePageContentAdmin(ReadOnlyAdmin):
+class HomePageContentAdmin(admin.ModelAdmin):  # Используем ModelAdmin вместо ReadOnlyAdmin
     form = HomePageContentForm
-    inlines = [EventInline, DiscountInline]
+    inlines = [EventInline]
     fieldsets = (
-        ('Видео', {'fields': ('welcome_video', 'overlay_video_text')}),
-        ('Фон и текст', {'fields': ('background_photo', 'big_text', 'small_photo', 'small_text')}),
-        ('Инструктор', {'fields': ('instructor',)}),
-        ('Подарочные сертификаты', {'fields': ('certificate_image', 'tg_id')}),
-        ('Описание мероприятий', {'fields': ('event_text',)}),
+        ('Видео', {
+            'fields': ('welcome_video', 'overlay_video_text')
+        }),
+        ('Фон и текст', {
+            'fields': ('background_photo', 'big_text', 'small_photo', 'small_text')
+        }),
+        ('Инструктор', {
+            'fields': ('instructor',)
+        }),
+        ('Подарочные сертификаты', {
+            'fields': (
+                'certificate_image', 'certificate_title', 'certificate_description',
+                'certificate_validity', 'certificate_terms', 'certificate_price'
+            )
+        }),
+        ('Скидки', {
+            'fields': (
+                'discount_title', 'discount_description', 'original_price',
+                'discounted_price', 'discount_percentage', 'discount_validity'
+            )
+        }),
+        ('Описание мероприятий', {
+            'fields': ('event_text',)
+        }),
     )
 
 

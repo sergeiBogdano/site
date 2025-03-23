@@ -15,5 +15,7 @@ urlpatterns = [
     path('gallery/', views.gallery, name='gallery'),
     path('apply/', views.application_view, name='application'),
     path('apply/success/', views.application_success, name='application_success'),
-    path('event/create/', views.event_create, name='event_create'),  # Добавлен путь для создания мероприятия
+    path('event/create/', views.event_create, name='event_create'),# Добавлен путь для создания мероприятия
+    path('event/<int:event_id>/', views.event_detail, name='event_detail'),
+                  # Новый маршрут для деталей мероприятия
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
