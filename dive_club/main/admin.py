@@ -1,11 +1,11 @@
 from django.contrib import admin
 from .models import (
-    Instructor, HomePageContent, Discount,
+    Instructor, HomePageContent,
     Event, EventImage,
     EquipmentPageContent,
     Equipment, GalleryImage,
     TrainingPage, TrainingCourse, TrainingImage, TrainingVideo,
-    AboutPage,
+    AboutPage, EquipmentCategory,
     ContactPage, TermsOfService,
     PrivacyPolicy, Application
 )
@@ -14,7 +14,6 @@ from .forms import (
     EquipmentPageContentForm,
     EquipmentForm,
     GalleryImageForm,
-    ContactPageForm
 )
 
 
@@ -33,17 +32,10 @@ class EventImageInline(admin.TabularInline):
 
 
 class EventInline(admin.TabularInline):
-    model = Event.homepage_content.through  # через промежуточную модель ManyToMany
+    model = Event.homepage_content.through
     extra = 1
     verbose_name = "Мероприятие"
     verbose_name_plural = "Мероприятия"
-
-
-class DiscountInline(admin.TabularInline):
-    model = Discount
-    extra = 1
-    verbose_name = "Скидка"
-    verbose_name_plural = "Скидки"
 
 
 @admin.register(Event)
@@ -62,15 +54,34 @@ class InstructorAdmin(admin.ModelAdmin):
 
 
 @admin.register(HomePageContent)
-class HomePageContentAdmin(ReadOnlyAdmin):
+class HomePageContentAdmin(admin.ModelAdmin):  # Используем ModelAdmin вместо ReadOnlyAdmin
     form = HomePageContentForm
-    inlines = [EventInline, DiscountInline]
+    inlines = [EventInline]
     fieldsets = (
-        ('Видео', {'fields': ('welcome_video', 'overlay_video_text')}),
-        ('Фон и текст', {'fields': ('background_photo', 'big_text', 'small_photo', 'small_text')}),
-        ('Инструктор', {'fields': ('instructor',)}),
-        ('Подарочные сертификаты', {'fields': ('certificate_image', 'tg_id')}),
-        ('Описание мероприятий', {'fields': ('event_text',)}),
+        ('Видео', {
+            'fields': ('welcome_video', 'overlay_video_text')
+        }),
+        ('Фон и текст', {
+            'fields': ('background_photo', 'big_text', 'small_photo', 'small_text')
+        }),
+        ('Инструктор', {
+            'fields': ('instructor',)
+        }),
+        ('Подарочные сертификаты', {
+            'fields': (
+                'certificate_image', 'certificate_title', 'certificate_description',
+                'certificate_validity', 'certificate_terms', 'certificate_price'
+            )
+        }),
+        ('Скидки', {
+            'fields': (
+                'discount_title', 'discount_description', 'original_price',
+                'discounted_price', 'discount_percentage', 'discount_validity'
+            )
+        }),
+        ('Описание мероприятий', {
+            'fields': ('event_text',)
+        }),
     )
 
 
@@ -84,13 +95,20 @@ class EquipmentPageContentAdmin(ReadOnlyAdmin):
     )
 
 
-@admin.register(Equipment)
-class EquipmentAdmin(admin.ModelAdmin):
-    form = EquipmentForm
+@admin.register(EquipmentCategory)
+class EquipmentCategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
+
+
+@admin.register(Equipment)
+class EquipmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category',)
+    search_fields = ('name',)
+    list_filter = ('category',)  # Фильтр по категориям
     fieldsets = (
-        (None, {'fields': ('name', 'description', 'image')}),
+        (None, {'fields': ('name', 'description', 'image', 'category')}),  # Добавляем поле категории
     )
 
 
@@ -123,7 +141,7 @@ class TrainingPageAdmin(admin.ModelAdmin):
     list_display = ("title",)
     inlines = [TrainingCourseInline, TrainingImageInline, TrainingVideoInline]
     fieldsets = (
-        ("Основное", {"fields": ("title", "description", "advantages", "course_prices")}),
+        ("Основное", {"fields": ("title", "description", "advantages")}),
     )
 
 
@@ -163,5 +181,21 @@ class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at",)
 
 
-admin.site.register(TermsOfService)
-admin.site.register(PrivacyPolicy)
+@admin.register(TermsOfService)
+class TermsOfServiceAdmin(admin.ModelAdmin):
+    list_display = ("title", "updated_at")
+    readonly_fields = ("created_at", "updated_at")
+    search_fields = ("title", "content")
+    ordering = ("-updated_at",)
+    verbose_name = "Правила пользования"
+    verbose_name_plural = "Правила пользования"
+
+
+@admin.register(PrivacyPolicy)
+class PrivacyPolicyAdmin(admin.ModelAdmin):
+    list_display = ("title", "updated_at")
+    readonly_fields = ("created_at", "updated_at")
+    search_fields = ("title", "content")
+    ordering = ("-updated_at",)
+    verbose_name = "Политика конфиденциальности"
+    verbose_name_plural = "Политика конфиденциальности"

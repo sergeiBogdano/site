@@ -1,98 +1,51 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // === Плавное появление секций при прокрутке ===
-  const sections = document.querySelectorAll("section");
-  const observerOptions = { threshold: 0.2 };
-  const appearObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("appear");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-  sections.forEach(section => {
-    section.classList.add("before-appear");
-    appearObserver.observe(section);
-  });
-
-  // === Динамическая смена цвета навбара при прокрутке ===
-  const navbar = document.querySelector(".navbar");
-  window.addEventListener("scroll", function() {
-    if (window.scrollY > 50) {
-      navbar.style.backgroundColor = "rgba(0, 0, 0, 0.95)";
-    } else {
-      navbar.style.backgroundColor = "rgba(0, 0, 0, 0.85)";
-    }
-  });
-
-  // === Лайтбокс для галереи и мероприятий ===
-  const images = document.querySelectorAll(".gallery-item, .event-image");
-  if (images.length > 0) {
-    const lightbox = document.createElement("div");
-    lightbox.id = "lightbox";
-    lightbox.classList.add("lightbox");
-    document.body.appendChild(lightbox);
-
-    const lightboxImg = document.createElement("img");
-    lightboxImg.classList.add("lightbox-content");
-    lightbox.appendChild(lightboxImg);
-
-    const prev = document.createElement("a");
-    prev.classList.add("prev");
-    prev.innerHTML = "&#10094;";
-    lightbox.appendChild(prev);
-
-    const next = document.createElement("a");
-    next.classList.add("next");
-    next.innerHTML = "&#10095;";
-    lightbox.appendChild(next);
-
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("gallery-modal");
+    const closeModal = document.querySelector(".close-modal");
+    const modalImage = document.getElementById("modal-image");
+    const prevButton = document.querySelector(".prev");
+    const nextButton = document.querySelector(".next");
+    const galleryItems = document.querySelectorAll(".gallery-item");
     let currentIndex = 0;
 
-    function openLightbox(index) {
-      currentIndex = index;
-      lightboxImg.src = images[currentIndex].dataset.full || images[currentIndex].src;
-      lightbox.classList.add("active");
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove("active");
-    }
-
-    function showPrev() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      lightboxImg.src = images[currentIndex].dataset.full || images[currentIndex].src;
-    }
-
-    function showNext() {
-      currentIndex = (currentIndex + 1) % images.length;
-      lightboxImg.src = images[currentIndex].dataset.full || images[currentIndex].src;
-    }
-
-    images.forEach((img, index) => {
-      img.addEventListener("click", () => openLightbox(index));
+    // Обработчик клика на изображение в галерее
+    galleryItems.forEach((item, index) => {
+        item.addEventListener("click", function () {
+            modal.style.display = "flex"; // Показываем модальное окно
+            modalImage.src = this.dataset.full; // Устанавливаем источник изображения
+            currentIndex = index; // Запоминаем текущий индекс
+        });
     });
 
-    prev.addEventListener("click", function(e) {
-      e.stopPropagation();
-      showPrev();
+    // Закрытие модального окна
+    closeModal.addEventListener("click", function () {
+        modal.style.display = "none"; // Скрываем модальное окно
     });
 
-    next.addEventListener("click", function(e) {
-      e.stopPropagation();
-      showNext();
+    // Закрытие модального окна при клике вне его
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.style.display = "none"; // Скрываем модальное окно
+        }
     });
 
-    lightbox.addEventListener("click", function(e) {
-      if (e.target === lightbox) {
-        closeLightbox();
-      }
+    // Навигация по изображениям
+    prevButton.addEventListener("click", function () {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : galleryItems.length - 1;
+        modalImage.src = galleryItems[currentIndex].dataset.full;
     });
 
-    document.addEventListener("keydown", function(e) {
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") showPrev();
-      if (e.key === "ArrowRight") showNext();
+    nextButton.addEventListener("click", function () {
+        currentIndex = (currentIndex < galleryItems.length - 1) ? currentIndex + 1 : 0;
+        modalImage.src = galleryItems[currentIndex].dataset.full;
     });
-  }
+
+    // Обработчик клика на карточку мероприятия (если нужно)
+    document.querySelectorAll(".event-card").forEach(card => {
+        card.addEventListener("click", function () {
+            const eventId = this.dataset.eventId;
+
+            // Переход на страницу мероприятия
+            window.location.href = `/event/${eventId}/`; // Замените на ваш URL
+        });
+    });
 });

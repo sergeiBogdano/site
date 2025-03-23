@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import (
     HomePageContent, Event, EventImage, EquipmentPageContent,
     GalleryImage, TrainingPage, AboutPage, ContactPage, TermsOfService,
-    PrivacyPolicy
+    PrivacyPolicy, Equipment, EquipmentCategory
 )
 from .forms import ApplicationForm
+from django.contrib import messages
+from django.http import JsonResponse
 
 
 def home(request):
@@ -16,6 +18,8 @@ def home(request):
         'discount_title': homepage_content.discount_title if homepage_content else None,
         'discount_description': homepage_content.discount_description if homepage_content else None,
         'discount_percentage': homepage_content.discount_percentage if homepage_content else None,
+        'original_price': homepage_content.original_price if homepage_content else None,  # Добавлено
+        'discounted_price': homepage_content.discounted_price if homepage_content else None,  # Добавлено
         'instructor_room_photo': homepage_content.instructor.room_photo.url
             if homepage_content and homepage_content.instructor and homepage_content.instructor.room_photo
             else None,
@@ -105,8 +109,12 @@ def application_view(request):
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('application_success')
+            # Сохраняем данные формы в базу данных
+            application = form.save()
+            return JsonResponse({'success': True, 'message': 'Ваша заявка успешно отправлена!'})
+        else:
+            # Возвращаем ошибки валидации формы
+            return JsonResponse({'success': False, 'errors': form.errors})
     else:
         form = ApplicationForm()
     return render(request, 'main/application.html', {'form': form})
@@ -114,3 +122,42 @@ def application_view(request):
 
 def application_success(request):
     return render(request, 'main/application_success.html')
+
+
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    images = [img.image.url for img in event.images.all()]  # Получаем ссылки на изображения
+
+    context = {
+        'event': event,
+        'images': images,
+    }
+    return render(request, 'main/event_detail.html', context)
+
+
+def equipment_detail(request, pk):
+    equipment = get_object_or_404(Equipment, pk=pk)
+    return render(request, 'main/equipment_detail.html', {'equipment': equipment})
+
+
+def equipment_list(request):
+    # Получаем контент страницы оборудования
+    equipment_page_content = EquipmentPageContent.objects.first()
+
+    # Получаем все оборудование
+    equipment_list = Equipment.objects.all()  # Получаем все оборудование
+
+    # Получаем все категории для фильтрации
+    equipment_categories = EquipmentCategory.objects.all()
+
+    # Проверка на наличие категории в GET-запросе
+    category = request.GET.get('category')
+    if category:
+        # Если категория выбрана, фильтруем по ней
+        equipment_list = equipment_list.filter(category__name=category)
+
+    return render(request, 'main/equipment_list.html', {
+        'equipment_list': equipment_list,
+        'equipment_page_content': equipment_page_content,
+        'equipment_categories': equipment_categories,  # Передаем категории в шаблон
+    })

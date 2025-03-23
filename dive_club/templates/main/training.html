@@ -4,54 +4,49 @@
 {% block title %}{{ training.title }}{% endblock %}
 
 {% block content %}
-<div class="training-container">
-    <h1>{{ training.title }}</h1>
-    <p>{{ training.description }}</p>
+<section class="training-section">
+    <div class="training-container">
+        <h1>{{ training.title }}</h1>
+        <p>{{ training.description }}</p>
 
-    <h2>Уровни курсов</h2>
-    <div class="course-section">
-        <h3>Для новичков</h3>
-        <p>{{ training.beginner_courses|linebreaks }}</p>
+        <h2>Уровни курсов</h2>
+        <div class="course-section">
+            {% for course in training.courses.all %}
+            <div class="course-card">
+                <h3>{{ course.get_level_display }}</h3>
+                <p>{{ course.description|linebreaks }}</p>
+                <p><strong>Цена: {{ course.price }} ₽</strong></p>
+            </div>
+            {% endfor %}
+        </div>
 
-        <h3>Продвинутый уровень</h3>
-        <p>{{ training.advanced_courses|linebreaks }}</p>
+        <h2>Преимущества обучения</h2>
+        <p>{{ training.advantages|linebreaks }}</p>
 
-        <h3>Профессиональные курсы</h3>
-        <p>{{ training.professional_courses|linebreaks }}</p>
+        <!-- Фотогалерея -->
+        {% if training.images.all %}
+            <h2>Фотогалерея</h2>
+            <div class="gallery">
+                {% for image in training.images.all %}
+                    <img src="{{ image.image.url }}" alt="Фото курса" class="training-image">
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <h3>Технический дайвинг</h3>
-        <p>{{ training.tech_courses|linebreaks }}</p>
+        <!-- Видео галерея -->
+        {% if training.videos.all %}
+            <h2>Видео обучения</h2>
+            <div class="video-gallery">
+                {% for video in training.videos.all %}
+                    <div class="video-container">
+                        <video width="100%" controls>
+                            <source src="{{ video.video.url }}" type="video/mp4">
+                            Ваш браузер не поддерживает тег video.
+                        </video>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-
-    <h2>Преимущества обучения</h2>
-    <p>{{ training.advantages|linebreaks }}</p>
-
-    <!-- Фотогалерея -->
-    {% if training.images.all %}
-        <h2>Фотогалерея</h2>
-        <div class="gallery">
-            {% for image in training.images.all %}
-                <img src="{{ image.image.url }}" alt="Фото курса" class="training-image">
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <!-- Видео галерея -->
-    {% if training.videos.all %}
-        <h2>Видео обучения</h2>
-        <div class="video-gallery">
-            {% for video in training.videos.all %}
-                <div class="video-container">
-                    <video width="560" height="315" controls>
-                        <source src="{{ video.video.url }}" type="video/mp4">
-                        Ваш браузер не поддерживает тег video.
-                    </video>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <h2>Стоимость курсов</h2>
-    <p>{{ training.course_prices|linebreaks }}</p>
-</div>
+</section>
 {% endblock %}

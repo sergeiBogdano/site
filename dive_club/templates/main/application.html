@@ -2,9 +2,63 @@
 
 {% block content %}
     <h1>Отправить заявку</h1>
-    <form method="post">
+    <form id="application-form" method="post" action="{% url 'application' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Отправить</button>
     </form>
+
+    <!-- Блок для уведомления -->
+    <div id="notification" class="success" style="display: none;">
+        <span id="notification-message"></span>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("application-form");
+            const notification = document.getElementById("notification");
+            const notificationMessage = document.getElementById("notification-message");
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+
+                fetch("{% url 'application' %}", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ошибка сети или сервера");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        notificationMessage.textContent = data.message;
+                        notification.classList.remove("error");
+                        notification.classList.add("success");
+                        notification.style.display = "block";
+                        form.reset();
+                    } else {
+                        notificationMessage.textContent = "Ошибка: " + Object.values(data.errors).join(", ");
+                        notification.classList.remove("success");
+                        notification.classList.add("error");
+                        notification.style.display = "block";
+                    }
+                })
+                .catch(error => {
+                    console.error("Ошибка:", error);
+                    notificationMessage.textContent = "Произошла ошибка при отправке формы.";
+                    notification.classList.remove("success");
+                    notification.classList.add("error");
+                    notification.style.display = "block";
+                });
+            });
+        });
+    </script>
 {% endblock %}

@@ -5,16 +5,26 @@
 
 {% block content %}
 <div class="gallery-container">
-  <div class="gallery-grid">
-    {% for image in images %}
-      {% if image.image %}
-        <img src="{{ image.image.url }}" class="gallery-item" data-full="{{ image.image.url }}" alt="Фото">
-      {% endif %}
-    {% endfor %}
-  </div>
+    <div class="gallery-grid">
+        {% for image in images %}
+            {% if image.image %}
+                <div class="gallery-item" data-full="{{ image.image.url }}">
+                    <img src="{{ image.image.url }}" alt="Фото">
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
 
-<!-- Лайтбокс создается динамически через script.js, поэтому здесь его удаляем -->
+<!-- Модальное окно для просмотра изображений -->
+<div id="gallery-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <button class="prev">&lt;</button>
+        <img id="modal-image" src="" alt="Фото" />
+        <button class="next">&gt;</button>
+    </div>
+</div>
 
 <!-- Подключаем общий JS-файл -->
 <script src="{% static 'js/script.js' %}"></script>

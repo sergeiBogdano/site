@@ -42,6 +42,7 @@ class EquipmentForm(forms.ModelForm):
             }),
         }
 
+
 # Форма для модели EquipmentPageContent
 class EquipmentPageContentForm(forms.ModelForm):
     class Meta:
@@ -58,18 +59,20 @@ class EquipmentPageContentForm(forms.ModelForm):
             }),
         }
 
+
 class GalleryImageForm(forms.ModelForm):
     images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = GalleryImage
-        fields = ['images']  # Оставляем только поле для загрузки
+        fields = ['images']
 
     def save(self, commit=True):
         images = self.files.getlist('images')
         for image in images:
             GalleryImage.objects.create(image=image)
         return super().save(commit=False)
+
 
 class ContactPageForm(forms.ModelForm):
     class Meta:
