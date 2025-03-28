@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ training.title }}{% endblock %}
+
+{% block content %}
+<section class="training-section">
+    <div class="training-container">
+        <div class="training-header">
+            <h1>{{ training.title }}</h1>
+            <p>{{ training.description }}</p>
+        </div>
+
+        <h2>Наши курсы</h2>
+
+        {% for course in training.courses.all %}
+            {% if course.course_category == "sdi_specialization" %}
+                <h3>Специализации SDI</h3>
+            {% elif course.course_category == "first_response" %}
+                <h3>Курсы первой медицинской помощи</h3>
+            {% endif %}
+            <div class="course-card">
+                <h4>{{ course.title }}</h4>
+                <p>{{ course.description|truncatewords:20 }}</p>
+                <a href="{% url 'course_detail' course.id %}" class="btn">Подробнее</a>
+            </div>
+        {% endfor %}
+
+        <h2>Преимущества обучения</h2>
+        <p>{{ training.advantages|linebreaks }}</p>
+    </div>
+</section>
+{% endblock %}

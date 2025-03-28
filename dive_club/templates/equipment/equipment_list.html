@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Оборудование - Дайверы{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Фоновый блок с заголовком -->
+    <section class="equipment-hero" style="background-image: url('{{ equipment_page_content.background_photo.url }}');">
+        <div class="overlay">
+            <h1>{{ equipment_page_content.title }}</h1>
+            <p>{{ equipment_page_content.description }}</p>
+        </div>
+    </section>
+
+    <!-- Форма фильтрации -->
+    <section class="filter-section">
+        <h2>Фильтр по категориям</h2>
+        <form method="GET" action="{% url 'equipment_list' %}">
+            <select name="category" onchange="this.form.submit()">
+                <option value="">Все категории</option>
+                {% for category in equipment_categories %}
+                    <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </section>
+
+    <!-- Список оборудования -->
+    <section class="equipment-list">
+        <h2>Наше оборудование</h2>
+        <div class="equipment-items">
+            {% for eq in equipment_list %}
+                <div class="equipment-item">
+                    <div class="equipment-image-wrapper">
+                        <img src="{{ eq.image.url }}" alt="{{ eq.name }}" class="equipment-image">
+                    </div>
+                    <div class="equipment-info">
+                        <h3>{{ eq.name }}</h3>
+                        <p>{{ eq.description|truncatechars:100|default:"Нет описания" }}</p>
+                        <a href="{% url 'equipment_detail' eq.id %}" class="cta-button">Читать далее</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="placeholder">Пока нет оборудования</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}

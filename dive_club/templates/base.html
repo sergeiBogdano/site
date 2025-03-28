@@ -5,64 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Дайверы{% endblock %}</title>
+    <!-- Основные стили -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Стили для навигации -->
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">  <!-- Подключение CSS для адаптивной навигации -->
+    <!-- Мобильные стили -->
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}" media="(max-width: 768px)">
+    <!-- Иконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
     <!-- Навигационная панель -->
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <a href="{% url 'home' %}" class="navbar-brand animate__animated animate__fadeIn">
-                    <i class="fas fa-water"></i> Дайверы
-                </a>
-                <ul class="navbar-menu">
-                    <li><a href="{% url 'about' %}" class="{% if request.path == '/about/' %}active{% endif %} animate__animated animate__fadeIn">
-                        <i class="fas fa-info-circle"></i> О нас
-                    </a></li>
-                    <li><a href="{% url 'training' %}" class="{% if request.path == '/training/' %}active{% endif %} animate__animated animate__fadeIn">
-                        <i class="fas fa-graduation-cap"></i> Обучение
-                    </a></li>
-                    <li><a href="{% url 'equipment_list' %}" class="{% if request.path == '/equipment/' %}active{% endif %} animate__animated animate__fadeIn">
-                        <i class="fas fa-tools"></i> Оборудование
-                    </a></li>
-                    <li><a href="{% url 'contacts' %}" class="{% if request.path == '/contacts/' %}active{% endif %} animate__animated animate__fadeIn">
-                        <i class="fas fa-phone"></i> Контакты
-                    </a></li>
-                    <li><a href="{% url 'gallery' %}" class="{% if request.path == '/gallery/' %}active{% endif %} animate__animated animate__fadeIn">
-                        <i class="fas fa-images"></i> Галерея
-                    </a></li>
-                    <li><a href="{% url 'application' %}" class="{% if request.path == '/application/' %}active{% endif %} animate__animated animate__fadeIn">
-                        <i class="fas fa-file-alt"></i> Заявка
-                    </a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    {% include "includes/header.html" %}  <!-- Подключение шапки из папки includes -->
 
-    <!-- Основной контент страницы -->
+    <!-- Основной контент -->
     <main class="container">
-        {% block content %}
-        <!-- Заглушка для контента -->
-        <section class="placeholder">
-            <h2>Добро пожаловать на сайт Дайверов!</h2>
-            <p>Здесь будет основной контент.</p>
-        </section>
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
-    <!-- Нижний колонтитул -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; {{ current_year|default:"2025" }} Дайверы. Все права защищены.</p>
-            <ul class="footer-links">
-                <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
-                <li><a href="{% url 'terms_of_service' %}">Условия использования</a></li>
-            </ul>
-        </div>
-    </footer>
+    <!-- Подвал -->
+    {% include "includes/footer.html" %}  <!-- Подключение подвала из папки includes -->
 
+    <!-- Основной JS -->
     <script src="{% static 'js/script.js' %}"></script>
+    <!-- JS для навигации -->
+    <script src="{% static 'js/header.js' %}"></script>  <!-- Подключение JS для адаптивной навигации -->
 </body>
 </html>

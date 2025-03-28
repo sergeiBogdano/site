@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="course-detail">
+    <div class="container">
+        <a href="{% url 'training' %}" class="btn-back">← Назад</a>
+        <h1>{{ course.title }}</h1>
+        <p>{{ course.description }}</p>
+
+        <h2>Что входит в курс:</h2>
+        <p>{{ course.included }}</p>
+
+        <h2>Галерея</h2>
+        <div class="gallery">
+            {% for image in course.images.all %}
+                <img src="{{ image.image.url }}" alt="Фото курса">
+            {% empty %}
+                <p>Фотографий пока нет.</p>
+            {% endfor %}
+        </div>
+
+        <h2>Видео</h2>
+        <div class="videos">
+            {% for video in course.videos.all %}
+                <video controls>
+                    <source src="{{ video.video.url }}" type="video/mp4">
+                    Ваш браузер не поддерживает видео.
+                </video>
+            {% empty %}
+                <p>Видео пока нет.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

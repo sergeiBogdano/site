@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная - Дайверы{% endblock %}
+
+{% block content %}
+<!-- Видео секция -->
+<section class="video-section">
+  {% if homepage_content.welcome_video %}
+    <video src="{{ homepage_content.welcome_video.url }}" autoplay muted loop playsinline></video>
+    {% if homepage_content.overlay_video_text %}
+      <div class="video-overlay-text">
+        <h2>{{ homepage_content.overlay_video_text }}</h2>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="placeholder video-placeholder">
+      <p>Пока нет видео</p>
+    </div>
+  {% endif %}
+</section>
+
+<!-- Фотогалерея -->
+<section class="photo-section">
+  <div class="big-photo-text">
+    {% if homepage_content.background_photo %}
+      <img src="{{ homepage_content.background_photo.url }}" alt="Фоновое изображение" class="big-photo">
+      <div class="overlay-text">
+        <h1>{{ homepage_content.big_text|default:"Пока нет текста" }}</h1>
+      </div>
+    {% else %}
+      <div class="placeholder photo-placeholder">
+        <p>Пока нет изображения</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="small-photo-text">
+    {% if homepage_content.small_photo %}
+      <img src="{{ homepage_content.small_photo.url }}" alt="Маленькое изображение" class="small-photo">
+      <div class="overlay-text">
+        <p>{{ homepage_content.small_text|default:"Пока нет текста" }}</p>
+      </div>
+    {% else %}
+      <div class="placeholder small-photo-placeholder">
+        <p>Пока нет маленького изображения</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Секция с инструктором -->
+<section class="diver-section">
+  <div class="instructor-info">
+    {% if homepage_content.instructor %}
+      <div class="instructor-images">
+        <div class="image-wrapper">
+          <img src="{{ homepage_content.instructor.avatar.url }}" alt="{{ homepage_content.instructor.name }}" class="avatar">
+          <div class="image-overlay"></div>
+        </div>
+        {% if homepage_content.instructor.room_photo %}
+          <div class="image-wrapper">
+            <img src="{{ homepage_content.instructor.room_photo.url }}" alt="Помещение" class="room-photo">
+            <div class="image-overlay"></div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="instructor-text">
+        <h2>{{ homepage_content.instructor.name }}</h2>
+        <p>{{ homepage_content.instructor.bio|default:"Пока нет текста об инструкторе" }}</p>
+        <a href="{% url 'about' %}" class="cta-button">Читать подробнее...</a>
+      </div>
+    {% else %}
+      <div class="placeholder instructor-info-placeholder">
+        <p>Пока нет информации об инструкторе</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Секция со скидками -->
+<section class="discount-section">
+  <h2>Скидки на курсы</h2>
+  <div class="discount-cards">
+    {% if homepage_content.discount_title %}
+      <div class="discount-card">
+        <h3>{{ homepage_content.discount_title }}</h3>
+        {% if homepage_content.original_price %}
+          <p class="original-price"><del>{{ homepage_content.original_price }} ₽</del></p>
+        {% endif %}
+        {% if homepage_content.discounted_price %}
+          <p class="discounted-price">{{ homepage_content.discounted_price }} ₽</p>
+        {% endif %}
+        <p>{{ homepage_content.discount_description|default:"Описание скидки" }}</p>
+        {% if homepage_content.discount_validity %}
+          <p class="discount-validity">Действует до: {{ homepage_content.discount_validity|date:"d.m.Y" }}</p>
+        {% endif %}
+        <a href="{% url 'contacts' %}" class="cta-button">Записаться</a>
+      </div>
+    {% else %}
+      <div class="placeholder discount-placeholder">
+        <p>Скоро появятся новые скидки!</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Подарочные сертификаты -->
+<section class="gift-certificates-section">
+  <h2>Подарочные сертификаты</h2>
+  <div class="certificate-card">
+    {% if homepage_content.certificate_image %}
+      <img src="{{ homepage_content.certificate_image.url }}" alt="Подарочный сертификат">
+    {% else %}
+      <div class="placeholder">Изображение сертификата отсутствует.</div>
+    {% endif %}
+    <div class="certificate-info">
+      <h3>{{ homepage_content.certificate_title|default:"Подарите незабываемые эмоции!" }}</h3>
+      <p>{{ homepage_content.certificate_description|default:"Сертификат на курс дайвинга — идеальный подарок для любителей приключений." }}</p>
+      <a href="{% url 'contacts' %}" class="cta-button">Заказать сертификат</a>
+    </div>
+  </div>
+</section>
+
+<!-- Мероприятия -->
+<section class="events-section">
+  <h2>Мероприятия</h2>
+  <div class="event-cards">
+    {% for event in events %}
+      <div class="event-card" data-event-id="{{ event.id }}">
+        <div class="event-image-wrapper">
+          {% if event.images.all %}
+            <img src="{{ event.images.first.image.url }}" alt="{{ event.title }}" class="event-image">
+            {% if event.images.count > 1 %}
+              <div class="event-more-images">
+                <span>+{{ event.images.count|add:"-1" }}</span>
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="placeholder">Изображение отсутствует.</div>
+          {% endif %}
+        </div>
+        <div class="event-text">
+          <h3>{{ event.title }}</h3>
+          <p>{{ event.description|truncatechars:100 }}</p>
+          <a href="{% url 'event_detail' event.id %}">Читать далее</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="placeholder event-placeholder">
+        <p>Пока нет запланированных мероприятий.</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Кнопка "Наверх" -->
+<button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-to-top" aria-label="Наверх">↑</button>
+{% endblock %}

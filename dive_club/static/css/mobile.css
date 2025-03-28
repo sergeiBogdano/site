@@ -1,0 +1,153 @@
+/* --- Адаптивные стили для мобильных устройств --- */
+@media (max-width: 768px) {
+    /* Переменные цветов */
+    :root {
+        --primary-color: #FF6F61; /* Коралловый */
+        --background-color: #005f73; /* Тёмный фон */
+        --text-color: #FFFFFF; /* Белый текст */
+        --dive-primary: #005f73;
+        --dive-secondary: #0a9396;
+        --dive-accent: #ee9b00;
+        --dive-dark: #003845;
+        --dive-light: #e9f5f5;
+        --dive-blue: #005f73;
+        --dive-teal: #0a9396;
+        --text-light: #e9f5f5;
+    }
+
+    /* Основной контент */
+    .container {
+        padding: 10px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    /* Подвал */
+    .footer {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .footer-links li {
+        list-style: none;
+    }
+
+    .footer-links a {
+        color: var(--text-light);
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+
+    /* Уменьшаем текст в видео оверлее */
+    .video-overlay-text h2 {
+        font-size: 1.2rem;
+        padding: 4px 8px;
+    }
+
+    /* Убираем черный квадрат и размытие под текстом с видео */
+    .video-overlay-text {
+        background: none; /* Удаляем фон */
+        backdrop-filter: none; /* Убираем размытие */
+    }
+
+    /* Видео секция */
+    .video-section {
+        overflow: hidden;
+    }
+
+    /* Фотогалерея */
+    .photo-section {
+        overflow-x: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .photo-section > div {
+        flex: 0 0 auto;
+        width: 80%;
+        scroll-snap-align: start;
+        position: relative;
+    }
+
+    /* Убираем фон для оверлея фотографий */
+    .overlay-text {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%; /* Оставляем 50% высоты */
+        display: flex;
+        align-items: center; /* Центрируем текст по вертикали */
+        justify-content: center; /* Центрируем текст по горизонтали */
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 2rem; /* Увеличенный размер текста для большей заметности */
+        color: white; /* Цвет текста */
+        background: none; /* Удаляем полупрозрачный фон */
+    }
+
+    /* Уменьшаем текст на большой фотографии */
+    .big-photo-text h1 {
+        font-size: 2rem; /* Увеличенный размер текста для большей заметности */
+        padding: 8px; /* Отступы для лучшего внешнего вида */
+        text-align: center; /* Центрируем текст */
+        width: 100%; /* Занимает всю ширину */
+    }
+
+    /* Секция мероприятий */
+    .event-cards {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 10px;
+    }
+
+    .event-card {
+        flex: 0 0 auto;
+        width: 80%;
+        scroll-snap-align: start;
+    }
+
+    /* Кнопка "Наверх" */
+    .scroll-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        padding: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        display: none;
+    }
+
+    .scroll-to-top.show {
+        display: block;
+    }
+
+    .scroll-to-top:hover {
+        background: rgba(0, 0, 0, 0.9);
+    }
+}

@@ -1,6 +1,6 @@
 /* --- Основные переменные --- */
 :root {
-    --primary-color: #00B4DB;       /* Основной цвет (яркий голубой) */
+    --primary-color: #ff6f61;       /* Основной цвет (яркий голубой) */
     --secondary-color: #0083B0;    /* Вторичный цвет (темно-голубой) */
     --accent-color: #FF6F61;       /* Акцентный цвет (коралловый) */
     --background-color: #005F73;   /* Темно-синий фон для подводного мира */
@@ -40,6 +40,34 @@ body::before {
     animation: waterMovement 20s linear infinite; /* Анимация движения воды */
 }
 
+/* --- Общие стили для кнопок --- */
+.button {
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.button:hover {
+    background: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* Применение общего класса */
+.cta-button {
+    @extend .button; /* Используем общий класс для кнопок */
+}
+
+.back-button {
+    @extend .button; /* Используем общий класс для кнопок */
+}
+
 @keyframes waterMovement {
     0% {
         background-position: 0 0;
@@ -56,6 +84,13 @@ body::before {
     padding: 0 20px;
     position: relative;
     z-index: 1; /* Контент поверх фона */
+}
+
+/* Скрыть кнопку-гамбургер на экранах больше 768px */
+@media (min-width: 769px) {
+    .navbar-toggler {
+        display: none; /* Скрыть кнопку-гамбургер */
+    }
 }
 
 /* --- Навигационная панель --- */
@@ -298,7 +333,6 @@ body::before {
     margin-right: 10px;
 }
 
-/* --- Стили для секции инструктора --- */
 /* --- Стили для секции инструктора --- */
 .diver-section {
     margin-bottom: 80px;
@@ -1322,20 +1356,42 @@ footer {
 }
 
 /* --- Стили для секции курсов --- */
+/* --- Основные стили --- */
 .training-section {
     margin-bottom: 80px;
     padding: 40px 20px;
-    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
-    backdrop-filter: blur(20px); /* Эффект размытия */
-    border-radius: 30px; /* Закругленные углы */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Тень */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.training-container {
-    max-width: 1200px; /* Ограничение ширины */
-    margin: 0 auto; /* Центрирование */
+/* --- Заголовок и описание --- */
+.training-header {
+    text-align: center;
+    margin-bottom: 40px;
 }
 
+.training-header h2 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+}
+
+.training-header p {
+    font-size: 1.2rem;
+    color: var(--text-color-light);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* --- Категории курсов --- */
+.course-category {
+    margin-bottom: 40px;
+}
+
+/* --- Карточки курсов --- */
 .course-section {
     display: flex;
     flex-wrap: wrap; /* Позволяет карточкам переноситься на следующую строку */
@@ -1343,73 +1399,71 @@ footer {
 }
 
 .course-card {
-    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон карточки */
-    backdrop-filter: blur(20px); /* Эффект размытия */
-    border-radius: 20px; /* Закругленные углы карточки */
-    padding: 20px; /* Внутренний отступ */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Тень */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     flex: 1 1 calc(25% - 20px); /* Гибкость карточек, чтобы уместить 4 в строку */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
-}
-
-.course-card h3 {
-    margin-top: 0; /* Убираем верхний отступ заголовка */
-}
-
-/* --- Стили для фотогалереи --- */
-.gallery {
+    min-width: 220px; /* Минимальная ширина карточки */
+    max-width: 280px; /* Максимальная ширина карточки */
+    height: 300px; /* Фиксированная высота для квадратных карточек */
     display: flex;
-    flex-wrap: wrap; /* Позволяет изображениям переноситься на следующую строку */
-    gap: 10px; /* Отступы между изображениями */
+    flex-direction: column; /* Позволяет заголовку и описанию располагаться вертикально */
+    justify-content: space-between; /* Разделяет элементы внутри карточки */
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- Фотогалерея --- */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
 }
 
 .training-image {
-    width: calc(25% - 10px); /* Ширина изображения 25% минус отступы */
-    height: auto; /* Автоматическая высота */
-    border-radius: 10px; /* Закругленные углы */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Тень */
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Адаптивность для меньших экранов */
+/* --- Видео-галерея --- */
+.video-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.video-container {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .training-image {
-        width: calc(50% - 10px); /* Для мобильных устройств 2 изображения в строку */
+    .training-section {
+        padding: 30px 15px;
+    }
+    .course-card {
+        flex: 1 1 calc(50% - 20px); /* Для планшетов 2 карточки в строку */
     }
 }
 
 @media (max-width: 480px) {
-    .training-image {
-        width: 100%; /* На очень маленьких экранах 1 изображение в строку */
+    .course-section {
+        overflow-x: auto; /* Позволяет горизонтальную прокрутку на мобильных устройствах */
+        display: block; /* Делаем блоками для прокрутки */
+    }
+    .course-card {
+        flex: 0 0 auto; /* Делает карточки фиксированной ширины */
+        width: 90%; /* Ширина карточек на мобильных устройствах */
     }
 }
 
-/* --- Стили для видео --- */
-.video-gallery {
-    display: flex;
-    flex-wrap: wrap; /* Позволяет видео переноситься на следующую строку */
-    gap: 20px; /* Промежуток между видео */
-}
-
-.video-container {
-    flex: 1 1 calc(50% - 20px); /* Ограничение ширины видео для 2 в строку */
-    max-width: 100%; /* Максимальная ширина 100% */
-    border-radius: 20px; /* Закругленные углы */
-    overflow: hidden; /* Скрытие переполнения */
-}
-
-/* --- Заголовки --- */
-h2, h3 {
-    color: var(--text-color); /* Цвет заголовка */
-    margin-bottom: 20px; /* Отступ снизу */
-}
-
-h2 {
-    font-size: 2.5rem; /* Размер заголовка второго уровня */
-}
-
-h3 {
-    font-size: 2rem; /* Размер заголовка третьего уровня */
-}
 
 /* --- Стили для страницы деталей оборудования --- */
 .equipment-detail {
@@ -1941,3 +1995,5 @@ form .errorlist li {
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+
+/* --- Для мобильных устройств --- */

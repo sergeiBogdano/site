@@ -9,7 +9,7 @@
         {% for image in images %}
             {% if image.image %}
                 <div class="gallery-item" data-full="{{ image.image.url }}">
-                    <img src="{{ image.image.url }}" alt="Фото">
+                    <img src="{{ image.image.url }}" alt="Фото" class="gallery-thumbnail">
                 </div>
             {% endif %}
         {% endfor %}
@@ -28,5 +28,4 @@
 
 <!-- Подключаем общий JS-файл -->
 <script src="{% static 'js/script.js' %}"></script>
-
 {% endblock %}

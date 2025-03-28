@@ -3,10 +3,10 @@
 {% block title %}{{ policy.title }}{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container policy-container">
     <h1>{{ policy.title }}</h1>
-    <p><strong>Дата обновления:</strong> {{ policy.updated_at|date:"d.m.Y" }}</p>
-    <div class="content">
+    <p class="policy-date"><strong>Дата обновления:</strong> {{ policy.updated_at|date:"d.m.Y" }}</p>
+    <div class="policy-content">
         {{ policy.content|safe }}
     </div>
 </div>

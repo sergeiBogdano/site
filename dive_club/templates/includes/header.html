@@ -1,0 +1,36 @@
+<header>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="navbar-brand">
+                <i class="fas fa-water"></i> Дайверы
+            </a>
+
+            <button class="navbar-toggler" id="navbar-toggle" aria-label="Меню">
+                <span class="toggler-bar"></span>
+                <span class="toggler-bar"></span>
+                <span class="toggler-bar"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="{% url 'about' %}" class="{% if request.path == '/about/' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> О нас
+                </a></li>
+                <li><a href="{% url 'training' %}" class="{% if request.path == '/training/' %}active{% endif %}">
+                    <i class="fas fa-graduation-cap"></i> Обучение
+                </a></li>
+                <li><a href="{% url 'equipment_list' %}" class="{% if request.path == '/equipment/' %}active{% endif %}">
+                    <i class="fas fa-tools"></i> Оборудование
+                </a></li>
+                <li><a href="{% url 'contacts' %}" class="{% if request.path == '/contacts/' %}active{% endif %}">
+                    <i class="fas fa-phone"></i> Контакты
+                </a></li>
+                <li><a href="{% url 'gallery' %}" class="{% if request.path == '/gallery/' %}active{% endif %}">
+                    <i class="fas fa-images"></i> Галерея
+                </a></li>
+                <li><a href="{% url 'application' %}" class="{% if request.path == '/application/' %}active{% endif %}">
+                    <i class="fas fa-file-alt"></i> Заявка
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ equipment.name }} - Оборудование{% endblock %}
+
+{% block content %}
+<section class="equipment-detail">
+    <div class="container">
+        <a href="{% url 'equipment_list' %}" class="back-button">← Вернуться назад</a>
+        <div class="equipment-content">
+            <div class="equipment-image-wrapper">
+                <img src="{{ equipment.image.url }}" alt="{{ equipment.name }}" class="equipment-image">
+            </div>
+            <div class="equipment-info">
+                <h1>{{ equipment.name }}</h1>
+                <p>{{ equipment.description }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,8 +1,13 @@
 from django import forms
-from .models import HomePageContent, Equipment, EquipmentPageContent, GalleryImage, ContactPage, Application
+from .models import (
+    HomePageContent, Equipment, EquipmentPageContent,
+    GalleryImage, ContactPage, Application
+)
 
 
 class HomePageContentForm(forms.ModelForm):
+    """Форма для редактирования контента главной страницы."""
+
     class Meta:
         model = HomePageContent
         fields = '__all__'
@@ -31,6 +36,8 @@ class HomePageContentForm(forms.ModelForm):
 
 
 class EquipmentForm(forms.ModelForm):
+    """Форма для редактирования оборудования."""
+
     class Meta:
         model = Equipment
         fields = '__all__'
@@ -43,8 +50,9 @@ class EquipmentForm(forms.ModelForm):
         }
 
 
-# Форма для модели EquipmentPageContent
 class EquipmentPageContentForm(forms.ModelForm):
+    """Форма для редактирования контента страницы оборудования."""
+
     class Meta:
         model = EquipmentPageContent
         fields = '__all__'
@@ -61,7 +69,12 @@ class EquipmentPageContentForm(forms.ModelForm):
 
 
 class GalleryImageForm(forms.ModelForm):
-    images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    """Форма для загрузки изображений в галерею."""
+
+    images = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True}),
+        required=False
+    )
 
     class Meta:
         model = GalleryImage
@@ -75,12 +88,16 @@ class GalleryImageForm(forms.ModelForm):
 
 
 class ContactPageForm(forms.ModelForm):
+    """Форма для редактирования контактной информации."""
+
     class Meta:
         model = ContactPage
         fields = ['address', 'phone_numbers', 'email', 'social_links']
 
 
 class ApplicationForm(forms.ModelForm):
+    """Форма для подачи заявки."""
+
     class Meta:
         model = Application
         fields = ['name', 'email', 'message']

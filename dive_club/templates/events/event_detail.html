@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="event-detail">
+    <div class="container">
+        <button onclick="window.history.back()" class="back-button">← Назад</button>
+        <div class="event-header">
+            <h2>{{ event.title }}</h2>
+        </div>
+
+        <div class="event-description">
+            <p>{{ event.description }}</p>
+        </div>
+
+        <!-- Секция изображений -->
+        <div class="event-images">
+            {% for image in event.images.all %}
+                <div class="event-image-wrapper">
+                    <img src="{{ image.image.url }}" alt="Изображение мероприятия" class="event-image">
+                </div>
+            {% empty %}
+                <p>Нет изображений для этого мероприятия.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
