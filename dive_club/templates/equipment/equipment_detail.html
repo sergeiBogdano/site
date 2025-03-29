@@ -13,6 +13,8 @@
             <div class="equipment-info">
                 <h1>{{ equipment.name }}</h1>
                 <p>{{ equipment.description }}</p>
+                <h2>Подробное описание</h2>  <!-- Заголовок для подробного описания -->
+                <p>{{ equipment.detailed_description|default:"Подробное описание отсутствует." }}</p> <!-- Подробное описание -->
             </div>
         </div>
     </div>

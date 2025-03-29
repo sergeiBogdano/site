@@ -1,32 +1,44 @@
-import os
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
-
-def validate_image_file_size(value):
-    """Валидация размера изображения (максимум 5 MB)."""
-    limit = 5 * 1024 * 1024  # 5 MB
-    if value.size > limit:
-        raise ValidationError('Максимальный размер файла 5MB')
+from .validators import validate_image_file_size, validate_video_file_size, validate_file_extension
 
 
-def validate_video_file_size(value):
-    """Валидация размера видео (максимум 50 MB)."""
-    limit = 50 * 1024 * 1024  # 50 MB
-    if value.size > limit:
-        raise ValidationError('Максимальный размер файла 50MB')
+class Certificate(models.Model):
+    """Сертификат для дайв-клуба."""
+    image = models.ImageField(
+        upload_to='certificates/',
+        verbose_name="Изображение сертификата",
+        validators=[validate_image_file_size, validate_file_extension]
+    )
+    title = models.CharField(
+        max_length=100,
+        verbose_name="Название сертификата"
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Описание сертификата"
+    )
+    validity = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Срок действия сертификата"
+    )
+    terms = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Условия использования сертификата"
+    )
 
+    def __str__(self):
+        return self.title
 
-def validate_file_extension(value):
-    """Валидация форматов файлов."""
-    valid_extensions = ['.mp4', '.mov', '.avi', '.jpg', '.jpeg', '.png']
-    extension = os.path.splitext(value.name)[1].lower()
-    if extension not in valid_extensions:
-        raise ValidationError(
-            'Недопустимый формат файла. Разрешены: ' + ', '.join(valid_extensions)
-        )
+    class Meta:
+        verbose_name = "Сертификат"
+        verbose_name_plural = "Сертификаты"
 
 
 class Instructor(models.Model):
@@ -94,47 +106,16 @@ class HomePageContent(models.Model):
         verbose_name="Текст на видео"
     )
     instructor = models.ForeignKey(
-        Instructor,
+        "Instructor",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         verbose_name="Инструктор"
     )
-    certificate_image = models.ImageField(
-        upload_to='certificates/',
+    certificates = models.ManyToManyField(
+        Certificate,
         blank=True,
-        null=True,
-        verbose_name="Изображение сертификата",
-        validators=[validate_image_file_size, validate_file_extension]
-    )
-    certificate_title = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name="Название сертификата"
-    )
-    certificate_description = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name="Описание сертификата"
-    )
-    certificate_validity = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name="Срок действия сертификата"
-    )
-    certificate_terms = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name="Условия использования сертификата"
-    )
-    certificate_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True,
-        verbose_name="Цена сертификата"
+        verbose_name="Сертификаты"
     )
     event_text = models.CharField(
         max_length=100,
@@ -173,7 +154,7 @@ class HomePageContent(models.Model):
         blank=True,
         null=True,
         verbose_name="Процент скидки",
-        validators=[MinValueValidator(0), MaxValueValidator(100)]
+        validators=[MinValueValidator(0), MaxValueValidator(100)]  # Исправлено
     )
     discount_validity = models.DateField(
         blank=True,
@@ -192,6 +173,8 @@ class HomePageContent(models.Model):
 class Event(models.Model):
     """Модель мероприятия."""
     title = models.CharField(max_length=100, verbose_name="Название мероприятия")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(
         verbose_name="Описание мероприятия",
         blank=True,
@@ -237,9 +220,9 @@ class EquipmentCategory(models.Model):
 
 
 class Equipment(models.Model):
-    """Модель оборудования."""
+    """Модель ремонтируемого оборудования."""
     name = models.CharField(max_length=100, verbose_name="Название оборудования")
-    description = models.TextField(verbose_name="Описание", blank=True, null=True)
+    description = models.TextField(verbose_name="Краткое описание", blank=True, null=True)
     image = models.ImageField(
         upload_to='equipment/',
         validators=[validate_image_file_size, validate_file_extension],
@@ -252,23 +235,33 @@ class Equipment(models.Model):
         blank=True,
         verbose_name="Категория"
     )
+    detailed_description = models.TextField(
+        verbose_name="Подробное описание ремонта",
+        blank=True,
+        null=True,
+        help_text="Подробная информация о ремонтных работах и услугах"
+    )
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "Оборудование"
-        verbose_name_plural = "Оборудование"
+        verbose_name = "Ремонт оборудования"
+        verbose_name_plural = "Ремонт оборудования"
 
 
 class EquipmentPageContent(models.Model):
-    """Контент страницы оборудования."""
+    """Контент страницы ремонта оборудования."""
     title = models.CharField(
         max_length=255,
         verbose_name="Заголовок страницы",
-        default="Снаряжение для дайвинга"
+        default="Ремонт оборудования"
     )
-    description = models.TextField(verbose_name="Описание страницы", blank=True, null=True)
+    description = models.TextField(
+        verbose_name="Вступительный текст страницы",
+        blank=True,
+        null=True
+    )
     background_photo = models.ImageField(
         upload_to='equipment_page/',
         blank=True,
@@ -280,15 +273,15 @@ class EquipmentPageContent(models.Model):
         Equipment,
         related_name="equipment_page",
         blank=True,
-        verbose_name="Список оборудования"
+        verbose_name="Список ремонтируемого оборудования"
     )
 
     def __str__(self):
-        return "Контент страницы оборудования"
+        return "Контент страницы ремонта оборудования"
 
     class Meta:
-        verbose_name = "Контент страницы оборудования"
-        verbose_name_plural = "Контент страницы оборудования"
+        verbose_name = "Контент страницы ремонта оборудования"
+        verbose_name_plural = "Контент страницы ремонта оборудования"
 
 
 class GalleryImage(models.Model):

@@ -1,0 +1,221 @@
+/* --- Переменные --- */
+:root {
+    --primary-color: #ff6f61;
+    --secondary-color: #0083B0;
+    --accent-color: #FF6F61;
+    --background-color: #005F73;
+    --text-color: #FFFFFF;
+    --glass-effect: rgba(255, 255, 255, 0.1);
+    --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --transition-speed: 0.4s;
+}
+
+/* --- Стили для ПК версии навигационной панели --- */
+.navbar {
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow);
+    animation: slideInDown 0.8s ease-out;
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform var(--transition-speed) ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-menu li {
+    position: relative;
+}
+
+.navbar-menu a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+.navbar-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.navbar-menu a i {
+    font-size: 1.2rem;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-speed) ease;
+}
+
+.navbar-menu a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.navbar-menu a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--accent-color);
+    box-shadow: var(--shadow);
+}
+
+/* Анимация появления навбара */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* --- Мобильные стили --- */
+/* --- Mobile-specific styles for navigation (для экранов ≤768px) --- */
+@media (max-width: 768px) {
+    /* Фон и базовые настройки навбара */
+    .navbar {
+        background: var(--glass-effect);
+        backdrop-filter: blur(10px);
+        padding: 5px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: var(--shadow);
+        height: 50px;
+        animation: slideInDown 0.8s ease-out;
+    }
+
+    /* Контейнер навбара – выстраиваем элементы по вертикали */
+    .navbar .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Логотип навбара */
+    .navbar-brand {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        color: var(--text-color);
+    }
+
+    /* Кнопка-гамбургер */
+    .navbar-toggler {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 1001;
+        height: 40px;
+    }
+
+    /* Полоски кнопки-гамбургера */
+    .toggler-bar {
+        display: block;
+        width: 35px;
+        height: 5px;
+        margin: 4px auto;
+        background-color: var(--text-color);
+        transition: background 0.3s;
+    }
+
+    /* Скрытое меню навбара (по умолчанию) */
+    .navbar-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: var(--background-color);
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        width: calc(100% - 40px);
+        margin: 0 20px;
+        z-index: 999;
+    }
+
+    /* Отображение меню при наличии класса .show */
+    .navbar-menu.show {
+        display: flex;
+    }
+
+    /* Элементы меню */
+    .navbar-menu li {
+        list-style: none;
+        margin: 2px 0;
+        width: 100%;
+    }
+
+    /* Ссылки в меню */
+    .navbar-menu a {
+        font-size: 0.9rem;
+        padding: 5px;
+        display: block;
+        text-align: left;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: background var(--transition-speed) ease;
+    }
+
+    .navbar-menu a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}

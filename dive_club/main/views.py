@@ -59,24 +59,27 @@ def course_detail(request, course_id):
 
 
 def equipment_list(request):
-    """Страница оборудования."""
+    """Страница ремонта оборудования."""
     equipment_page_content = EquipmentPageContent.objects.first()
-    equipment_list = Equipment.objects.all()
     equipment_categories = EquipmentCategory.objects.all()
-    category = request.GET.get('category')
 
-    if category:
-        equipment_list = equipment_list.filter(category__name=category)
+    category_name = request.GET.get('category')
+    if category_name:
+        equipment_list = Equipment.objects.filter(category__name=category_name)
+    else:
+        equipment_list = Equipment.objects.all()
 
-    return render(request, 'equipment/equipment_list.html', {
+    context = {
         'equipment_list': equipment_list,
         'equipment_page_content': equipment_page_content,
         'equipment_categories': equipment_categories,
-    })
+        'selected_category': category_name,
+    }
+    return render(request, 'equipment/equipment_list.html', context)
 
 
 def equipment_detail(request, pk):
-    """Детальная страница оборудования."""
+    """Детальная страница ремонта оборудования."""
     equipment = get_object_or_404(Equipment, pk=pk)
     return render(request, 'equipment/equipment_detail.html', {'equipment': equipment})
 

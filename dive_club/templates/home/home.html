@@ -108,17 +108,27 @@
 <!-- Подарочные сертификаты -->
 <section class="gift-certificates-section">
   <h2>Подарочные сертификаты</h2>
-  <div class="certificate-card">
-    {% if homepage_content.certificate_image %}
-      <img src="{{ homepage_content.certificate_image.url }}" alt="Подарочный сертификат">
+  <div class="certificates">
+    {% if homepage_content.certificates.all %}
+      {% for certificate in homepage_content.certificates.all %}
+        <div class="certificate-card">
+          {% if certificate.image %}
+            <img src="{{ certificate.image.url }}" alt="{{ certificate.title }}">
+          {% else %}
+            <div class="placeholder">Изображение сертификата отсутствует.</div>
+          {% endif %}
+          <div class="certificate-info">
+            <h3>{{ certificate.title|default:"Подарите незабываемые эмоции!" }}</h3>
+            <p>{{ certificate.description|default:"Сертификат на курс дайвинга — идеальный подарок для любителей приключений." }}</p>
+            <a href="{% url 'contacts' %}" class="cta-button">Заказать сертификат</a>
+          </div>
+        </div>
+      {% endfor %}
     {% else %}
-      <div class="placeholder">Изображение сертификата отсутствует.</div>
+      <div class="placeholder">
+        <p>Пока сертификаты не добавлены.</p>
+      </div>
     {% endif %}
-    <div class="certificate-info">
-      <h3>{{ homepage_content.certificate_title|default:"Подарите незабываемые эмоции!" }}</h3>
-      <p>{{ homepage_content.certificate_description|default:"Сертификат на курс дайвинга — идеальный подарок для любителей приключений." }}</p>
-      <a href="{% url 'contacts' %}" class="cta-button">Заказать сертификат</a>
-    </div>
   </div>
 </section>
 
